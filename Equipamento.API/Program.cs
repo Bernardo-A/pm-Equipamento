@@ -33,4 +33,5 @@ app.Run();
 void ConfigureServices(IServiceCollection services)
 {
     services.AddTransient<IBicicletaService, BicicletaService>();
+    services.AddTransient<ITotemService, TotemService>();
 }
