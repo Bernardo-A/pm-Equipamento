@@ -1,4 +1,5 @@
 using AutoMapper;
+using Equipamento.API.Controllers;
 using Equipamento.API.Services;
 using Equipamento.API.ViewModels;
 using FluentAssertions;
