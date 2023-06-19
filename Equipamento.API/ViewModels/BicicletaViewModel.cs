@@ -2,7 +2,7 @@
 {
     public class BicicletaViewModel
     {
-        public int Id { get; set; }
+        public int Id { get; set; } = 0;
         public string? Marca { get; set; }
         public string? Modelo { get; set; }
         public string? Numero { get; set; }
