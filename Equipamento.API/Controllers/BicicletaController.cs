@@ -3,6 +3,8 @@ using Equipamento.API.Services;
 using Equipamento.API.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
+namespace Equipamento.API.Controllers;
+
 [ApiController]
 [Route("bicicleta")]
 public class BicicletaController : ControllerBase
