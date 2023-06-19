@@ -6,6 +6,7 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
+using Newtonsoft.Json.Bson;
 using Xunit;
 
 namespace Equipamento.Tests;
@@ -77,5 +78,50 @@ public class BicicletaTest
 
         Assert.IsType<BicicletaViewModel>(result);
     }
+
+    [Fact]
+    public void TestBicicletaViewModelGet()
+    {
+        var bicicletaService = new BicicletaService(); ;
+
+        var bicicleta = bicicletaService.GetBicicleta();
+
+        var result = new BicicletaViewModel();
+        {
+            result.Id = bicicleta.Id;
+            result.Ano = bicicleta.Ano;
+            result.Marca = bicicleta.Marca;
+            result.Modelo = bicicleta.Modelo;
+            result.Numero = bicicleta.Numero;
+            result.Status = bicicleta.Status;
+        }
+
+        result.Should().BeEquivalentTo(bicicleta);
+    }
+
+    [Fact]
+    public void TestBicicletaInsertViewModelGet()
+    {
+        var bicicleta = new BicicletaInsertViewModel
+        {
+            Marca = "Caloi",
+            Modelo = "Caloi 1000",
+            Numero = "000",
+            Ano = "2023",
+            Status = "nova",
+        };
+
+        var result = new BicicletaInsertViewModel();
+        {
+            result.Ano = bicicleta.Ano;
+            result.Marca = bicicleta.Marca;
+            result.Modelo = bicicleta.Modelo;
+            result.Numero = bicicleta.Numero;
+            result.Status = bicicleta.Status;
+        }
+
+        result.Should().BeEquivalentTo(bicicleta);
+    }
+
 
 }
