@@ -8,6 +8,9 @@ namespace Equipamento.API.AutoMapperProfiles
         public EquipamentoAutoMapperProfile() 
         {
             CreateMap<BicicletaInsertViewModel, BicicletaViewModel>().ForMember(dest => dest.Id, opt => opt.MapFrom(src => 0));
+            CreateMap<TotemInsertViewModel, TotemViewModel>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => 0))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => "Habilitado"));
         }
     }
 }
