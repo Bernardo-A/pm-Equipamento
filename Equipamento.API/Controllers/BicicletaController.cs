@@ -11,14 +11,11 @@ public class BicicletaController : ControllerBase
 {
     private readonly ILogger<BicicletaController> _logger;
 
-    private readonly IMapper _mapper;
-
     private readonly IBicicletaService _bicicletaService;
 
-    public BicicletaController(ILogger<BicicletaController> logger, IMapper mapper, IBicicletaService bicicletaService)
+    public BicicletaController(ILogger<BicicletaController> logger, IBicicletaService bicicletaService)
     {
         _logger = logger;
-        _mapper = mapper;
         _bicicletaService = bicicletaService;
     }
 
@@ -27,7 +24,7 @@ public class BicicletaController : ControllerBase
     public IActionResult Create([FromBody] BicicletaInsertViewModel bicicleta)
     {
         _logger.LogInformation("Criando bicicleta...");
-        var result = _mapper.Map<BicicletaInsertViewModel, BicicletaViewModel>(bicicleta);
+        var result = _bicicletaService.CreateBicicleta(bicicleta);
         return Ok(result);
     }
 
@@ -37,9 +34,12 @@ public class BicicletaController : ControllerBase
     {
 
         _logger.LogInformation("Alterando bicicleta...");
-        var bicicletaAntigo = _bicicletaService.GetBicicleta();
-        var result = _mapper.Map(bicicletaNovo, bicicletaAntigo);
-        return Ok(result);
+        if (_bicicletaService.Contains(id))
+        {
+            var result = _bicicletaService.UpdateBicicleta(bicicletaNovo, id);
+            return Ok(result);
+        }
+        return NotFound();
     }
 
     [HttpDelete]
@@ -48,9 +48,55 @@ public class BicicletaController : ControllerBase
     {
         _logger.LogInformation("Deletando bicicleta...");
 
-        var bicicleta = _bicicletaService.GetBicicleta();
-        bicicleta.Id = id;
-        bicicleta.Status = "Excluida";
-        return Ok();
+        if (_bicicletaService.Contains(id))
+        {
+            _bicicletaService.Deletebicicleta(id);
+            return Ok();
+        }
+        return NotFound();
     }
+
+    [HttpGet]
+    [Route("{id}")]
+    public IActionResult Get(int id)
+    {
+        _logger.LogInformation("Buscando bicicleta...");
+        if (_bicicletaService.Contains(id))
+        {
+            var result = _bicicletaService.GetBicicleta(id);
+            return Ok(result);
+        }
+        return NotFound();
+
+    }
+
+    [HttpPost]
+    [Route("{id}/status/{statusEnum}")]
+    public IActionResult ChangeStatus(int id, string status)
+    {
+        _logger.LogInformation("Alterando status da bicicleta...");
+        if(_bicicletaService.Contains(id))
+        {
+            var result = _bicicletaService.ChangeStatus(id, status);
+            return Ok(result);
+        }
+        else { return NotFound(); }
+    }
+
+    [HttpGet]
+    [Route("")]
+    public IActionResult GetAll()
+    {
+        _logger.LogInformation("Retornando listas de bicicleta...");
+        if (_bicicletaService.isEmpty())
+        {
+            return NotFound();
+        }
+        return Ok(_bicicletaService.GetAll());
+    }
+
+    //[HttpPost]
+    //[Route("integrarNaRed")] 
+    //public IActionResult Retrive(){
 }
+

@@ -1,4 +1,5 @@
 using Equipamento.API.Services;
+using Equipamento.API.ViewModels;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,4 +35,5 @@ void ConfigureServices(IServiceCollection services)
 {
     services.AddTransient<IBicicletaService, BicicletaService>();
     services.AddTransient<ITotemService, TotemService>();
+    services.AddTransient<ITrancaService, TrancaService>();
 }
