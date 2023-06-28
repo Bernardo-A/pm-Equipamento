@@ -8,7 +8,7 @@ namespace Equipamento.API.Services
     {
         public TrancaViewModel CreateTranca(TrancaInsertViewModel Tranca);
         public TrancaViewModel GetTranca(int id);
-        public TrancaViewModel UpdateTranca(TrancaInsertViewModel Tranca, int id);
+        public TrancaViewModel UpdateTranca(TrancaInsertViewModel tranca, int id);
         public TrancaViewModel DeleteTranca(int id);
         public List<TrancaViewModel> GetAll();
         public bool Contains(int id);
@@ -53,10 +53,10 @@ namespace Equipamento.API.Services
             return dict.ElementAt(id).Value;
         }
 
-        public TrancaViewModel UpdateTranca(TrancaInsertViewModel TrancaNovo, int id)
+        public TrancaViewModel UpdateTranca(TrancaInsertViewModel tranca, int id)
         {
             var TrancaAntigo = dict.ElementAt(id).Value;
-            var result = _mapper.Map(TrancaNovo, TrancaAntigo);
+            var result = _mapper.Map(tranca, TrancaAntigo);
             dict[id] = result;
             return (result);
         }
@@ -145,7 +145,6 @@ namespace Equipamento.API.Services
             if (_totemService.IsTrancaAssigned(tranca.Id))
             {
                 _totemService.AddTranca(tranca, totemId);
-                return;
             }
 
         }
@@ -155,7 +154,6 @@ namespace Equipamento.API.Services
             if (_totemService.IsTrancaAssigned(tranca.Id))
             {
                 _totemService.AddTranca(tranca, totemId);
-                return;
             }
         }
 

@@ -24,7 +24,7 @@ namespace Equipamento.API.Services
         {
         }
 
-        public BicicletaViewModel CreateBicicleta(BicicletaInsertViewModel bicicleta)
+        public virtual BicicletaViewModel CreateBicicleta(BicicletaInsertViewModel bicicleta)
         {
             var result = new BicicletaViewModel()
             {
@@ -39,12 +39,12 @@ namespace Equipamento.API.Services
             return (result);
         }
 
-        public BicicletaViewModel GetBicicleta(int id)
+        public virtual BicicletaViewModel GetBicicleta(int id)
         {
             return dict.ElementAt(id).Value;
         }
 
-        public BicicletaViewModel UpdateBicicleta(BicicletaInsertViewModel bicicleta, int id)
+        public virtual BicicletaViewModel UpdateBicicleta(BicicletaInsertViewModel bicicleta, int id)
         {
             var result = new BicicletaViewModel()
             {
@@ -59,13 +59,13 @@ namespace Equipamento.API.Services
             return (result);
         }
 
-        public BicicletaViewModel Deletebicicleta(int id)
+        public virtual BicicletaViewModel Deletebicicleta(int id)
         {
             dict[id].Status = "Excluida";
             return dict.ElementAt(id).Value;
         }
 
-        public List<BicicletaViewModel> GetAll()
+        public virtual List<BicicletaViewModel> GetAll()
         {
             List<BicicletaViewModel> result = new();
             Dictionary<int, BicicletaViewModel>.ValueCollection objects = dict.Values;
@@ -76,13 +76,13 @@ namespace Equipamento.API.Services
             return result;
         }
 
-        public BicicletaViewModel ChangeStatus(int id, string status)
+        public virtual BicicletaViewModel ChangeStatus(int id, string status)
         {
             dict[id].Status = status;
             return dict.ElementAt(id).Value;
         }
 
-        public bool Contains(int id)
+        public virtual bool Contains(int id)
         {
             if (dict.ContainsKey(id))
             {
@@ -91,7 +91,7 @@ namespace Equipamento.API.Services
             return false;
         }
 
-        public bool IsEmpty()
+        public virtual bool IsEmpty()
         {
             if(dict.Count == 0)
             {

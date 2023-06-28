@@ -63,9 +63,8 @@ namespace Equipamento.API.Services
             return (result);
         }
 
-        public TotemViewModel DeleteTotem(int id)
+        public virtual TotemViewModel DeleteTotem(int id)
         {
-            
             return dict.ElementAt(id).Value;
         }
 
@@ -80,7 +79,7 @@ namespace Equipamento.API.Services
             return result;
         }
 
-        public bool Contains(int id)
+        public virtual bool Contains(int id)
         {
             if (dict.ContainsKey(id))
             {
@@ -163,7 +162,6 @@ namespace Equipamento.API.Services
                     }
                 }
             }
-            return;
         }
 
         public bool IsTrancaAssigned(int trancaId)

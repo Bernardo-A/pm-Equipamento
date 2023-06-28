@@ -12,17 +12,16 @@ namespace equipamento.tests;
 public class BicicletaControllerTest
 {
 
-    private readonly ILogger<BicicletaController> _logger;
+    private readonly Mock<ILogger<BicicletaController>> _logger = new();
 
     [Fact]
-    public void CreateonSucessReturnStatuscode200()
+    public void CreateOnSuccessReturnStatuscode200()
     {
         var mockBicicletaService = new Mock<BicicletaService>();
         
+        var sut = new BicicletaController(_logger.Object, mockBicicletaService.Object);
 
-        var sut = new BicicletaController(_logger, mockBicicletaService.Object);
-
-        var result = (OkObjectResult)sut.Create(new BicicletaViewModel
+        var result = (OkObjectResult)sut.Create(new BicicletaInsertViewModel
         {
             Marca = "caloi",
             Modelo = "caloi 1000",
@@ -34,93 +33,146 @@ public class BicicletaControllerTest
         result.StatusCode.Should().Be(200);
     }
 
-    //[fact]
-    //public void editonsucessreturnstatuscode200()
-    //{
+    [Fact]
+    public void EditOnSuccessReturnStatuscode200()
+    {
+        var mockBicicletaService = new Mock<BicicletaService>();
+        mockBicicletaService.Setup(service => service.Contains(It.IsAny<int>())).Returns(true);
 
-    //    var mockbicicletaservice = new mock<ibicicletaservice>();
-    //    mockbicicletaservice.setup(service => service.getbicicleta()).returns(new bicicletaviewmodel());
+        var sut = new BicicletaController(_logger.Object, mockBicicletaService.Object);
 
-    //    var sut = new bicicletacontroller(_logger.object, _mapper.object, mockbicicletaservice.object);
+        var result = (OkObjectResult)sut.Edit(new BicicletaInsertViewModel
+        {
+            Marca = "caloi",
+            Modelo = "caloi 1000",
+            Numero = "000",
+            Ano = "2023",
+            Status = "nova",
+        }, 0);
 
-    //    var result = (okobjectresult)sut.edit(new bicicletainsertviewmodel
-    //    {
-    //        marca = "caloi",
-    //        modelo = "caloi 1000",
-    //        numero = "000",
-    //        ano = "2023",
-    //        status = "nova",
-    //    }, 0);
+        result.StatusCode.Should().Be(200);
+    }
 
-    //    result.statuscode.should().be(200);
-    //}
+    [Fact]
+    public void EditOnFailureReturnStatuscode403()
+    {
+        var mockBicicletaService = new Mock<BicicletaService>();
+        mockBicicletaService.Setup(service => service.Contains(It.IsAny<int>())).Returns(false);
 
-    //[fact]
-    //public void deleteonsucessreturnstatuscode200()
-    //{
-    //    var mockbicicletaservice = new mock<ibicicletaservice>();
-    //    mockbicicletaservice.setup(service => service.getbicicleta()).returns(new bicicletaviewmodel());
+        var sut = new BicicletaController(_logger.Object, mockBicicletaService.Object);
 
-    //    var sut = new bicicletacontroller(_logger.object, _mapper.object, mockbicicletaservice.object);
+        var result = (NotFoundResult)sut.Edit(new BicicletaInsertViewModel(), It.IsAny<int>());
 
-    //    var result = (okresult)sut.delete(0);
+        result.StatusCode.Should().Be(404);
+    }
 
-    //    result.statuscode.should().be(200);
-    //}
+    [Fact]
+    public void DeleteOnSuccessReturnStatusCode200() 
+    {
+        var mockBicicletaService = new Mock<BicicletaService>();
+        mockBicicletaService.Setup(service => service.Contains(It.IsAny<int>())).Returns(true);
+        mockBicicletaService.Setup(service => service.Deletebicicleta(It.IsAny<int>())).Returns(new BicicletaViewModel());
 
-    //[fact]
-    //public void bicicletaservicegetbicicletareturnsbicicleta()
-    //{
-    //    var sut = new bicicletaservice();
+        var sut = new BicicletaController(_logger.Object, mockBicicletaService.Object);
 
-    //    var result = sut.getbicicleta();
+        var result = (OkResult)sut.Delete(It.IsAny<int>());
 
-    //    assert.istype<bicicletaviewmodel>(result);
-    //}
+        result.StatusCode.Should().Be(200);
+    }
 
-    //[fact]
-    //public void testbicicletaviewmodelget()
-    //{
-    //    var bicicletaservice = new bicicletaservice(); ;
+    [Fact]
+    public void DeleteWhenNotFoundReturnStatuscode404() 
+    {
+        var mockBicicletaService = new Mock<BicicletaService>();   
+        mockBicicletaService.Setup(service => service.Contains(It.IsAny<int>())).Returns(false);
 
-    //    var bicicleta = bicicletaservice.getbicicleta();
+        var sut = new BicicletaController(_logger.Object, mockBicicletaService.Object);
 
-    //    var result = new bicicletaviewmodel();
-    //    {
-    //        result.id = bicicleta.id;
-    //        result.ano = bicicleta.ano;
-    //        result.marca = bicicleta.marca;
-    //        result.modelo = bicicleta.modelo;
-    //        result.numero = bicicleta.numero;
-    //        result.status = bicicleta.status;
-    //    }
+        var result = (NotFoundResult)sut.Delete(It.IsAny<int>());
 
-    //    result.should().beequivalentto(bicicleta);
-    //}
+        result.StatusCode.Should().Be(404);
+    }
 
-    //[fact]
-    //public void testbicicletainsertviewmodelget()
-    //{
-    //    var bicicleta = new bicicletainsertviewmodel
-    //    {
-    //        marca = "caloi",
-    //        modelo = "caloi 1000",
-    //        numero = "000",
-    //        ano = "2023",
-    //        status = "nova",
-    //    };
+    [Fact]
+    public void GetOnSuccessRetursStatusCode200()
+    {
+        var mockBicicletaService = new Mock<BicicletaService>();
+        mockBicicletaService.Setup(service => service.Contains(It.IsAny<int>())).Returns(true);
+        mockBicicletaService.Setup(service => service.GetBicicleta(It.IsAny<int>())).Returns(new BicicletaViewModel());
 
-    //    var result = new bicicletainsertviewmodel();
-    //    {
-    //        result.ano = bicicleta.ano;
-    //        result.marca = bicicleta.marca;
-    //        result.modelo = bicicleta.modelo;
-    //        result.numero = bicicleta.numero;
-    //        result.status = bicicleta.status;
-    //    }
+        var sut = new BicicletaController(_logger.Object, mockBicicletaService.Object);
 
-    //    result.should().beequivalentto(bicicleta);
-    //}
+        var result = (OkObjectResult)sut.Get(It.IsAny<int>());
+
+        result.StatusCode.Should().Be(200);
+    }
+
+    [Fact]
+    public void GetOnFailureRetursStatusCode404()
+    {
+        var mockBicicletaService = new Mock<BicicletaService>();
+        mockBicicletaService.Setup(service => service.Contains(It.IsAny<int>())).Returns(false);
+
+        var sut = new BicicletaController(_logger.Object, mockBicicletaService.Object);
+
+        var result = (NotFoundResult)sut.Get(It.IsAny<int>());
+
+        result.StatusCode.Should().Be(404);
+    }
+
+    [Fact]
+    public void ChangeStatusOnSuccessReturns200()
+    {
+        var mockBicicletaService = new Mock<BicicletaService>();
+        mockBicicletaService.Setup(service => service.Contains(It.IsAny<int>())).Returns(true);
+        mockBicicletaService.Setup(service => service.ChangeStatus(It.IsAny<int>(), It.IsAny<string>())).Returns(new BicicletaViewModel());
+
+        var sut = new BicicletaController(_logger.Object, mockBicicletaService.Object);
+
+        var result = (OkObjectResult)sut.ChangeStatus(It.IsAny<int>(), It.IsAny<string>());
+
+        result.StatusCode.Should().Be(200);
+    }
+
+    [Fact]
+    public void ChangeStatusOnFailureReturns200()
+    {
+        var mockBicicletaService = new Mock<BicicletaService>();
+        mockBicicletaService.Setup(service => service.Contains(It.IsAny<int>())).Returns(false);
+
+        var sut = new BicicletaController(_logger.Object, mockBicicletaService.Object);
+
+        var result = (NotFoundResult)sut.ChangeStatus(It.IsAny<int>(), It.IsAny<string>());
+
+        result.StatusCode.Should().Be(404);
+    }
+
+    [Fact]
+    public void GetAllOnSuccessReturns200()
+    {
+        var mockBicicletaService = new Mock<BicicletaService>();
+        mockBicicletaService.Setup(service => service.IsEmpty()).Returns(false);
+        mockBicicletaService.Setup(service => service.GetAll()).Returns(new List<BicicletaViewModel>());
+
+        var sut = new BicicletaController(_logger.Object, mockBicicletaService.Object);
+
+        var result = (OkObjectResult)sut.GetAll();
+
+        result.StatusCode.Should().Be(200);
+    }
+
+    [Fact]
+    public void GetAllOnFailureReturns404()
+    {
+        var mockBicicletaService = new Mock<BicicletaService>();
+        mockBicicletaService.Setup(service => service.IsEmpty()).Returns(true);
+
+        var sut = new BicicletaController(_logger.Object, mockBicicletaService.Object);
+
+        var result = (NotFoundResult)sut.GetAll();
+
+        result.StatusCode.Should().Be(404);
+    }
 
 
 }
