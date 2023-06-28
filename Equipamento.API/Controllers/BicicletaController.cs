@@ -88,15 +88,31 @@ public class BicicletaController : ControllerBase
     public IActionResult GetAll()
     {
         _logger.LogInformation("Retornando listas de bicicleta...");
-        if (_bicicletaService.isEmpty())
+        if (_bicicletaService.IsEmpty())
         {
             return NotFound();
         }
         return Ok(_bicicletaService.GetAll());
     }
 
-    //[HttpPost]
-    //[Route("integrarNaRed")] 
-    //public IActionResult Retrive(){
+    [HttpPost]
+    [Route("integrarNaRede")]
+    public IActionResult AddToTranca([FromBody] BicicletaRedeAddViewModel viewModel)
+    {
+        if (_bicicletaService.Contains(viewModel.BicicletaId))
+        {
+
+        }
+        return Ok();
+    }
+
+    [HttpPost]
+    [Route("retirarDaRede")]
+    public IActionResult RemoveFromTranca([FromBody] RedeRemoveViewModel view)
+    {
+        return Ok();
+    }
+
+
 }
 

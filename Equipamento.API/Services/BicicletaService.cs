@@ -12,7 +12,7 @@ namespace Equipamento.API.Services
         public BicicletaViewModel Deletebicicleta(int id);
         public List<BicicletaViewModel> GetAll();
         public bool Contains(int id);
-        public bool isEmpty();
+        public bool IsEmpty();
         public BicicletaViewModel ChangeStatus(int id, string status);
     }
 
@@ -20,17 +20,21 @@ namespace Equipamento.API.Services
     {
         private static readonly Dictionary<int, BicicletaViewModel> dict = new();
 
-        private readonly IMapper _mapper;
-
-        public BicicletaService(IMapper mapper) 
+        public BicicletaService() 
         {
-            _mapper = mapper;
         }
 
         public BicicletaViewModel CreateBicicleta(BicicletaInsertViewModel bicicleta)
         {
-            var result = _mapper.Map<BicicletaInsertViewModel, BicicletaViewModel>(bicicleta);
-            result.Id = dict.Count;
+            var result = new BicicletaViewModel()
+            {
+                Id = dict.Count,
+                Marca = bicicleta.Marca,
+                Modelo = bicicleta.Modelo,
+                Ano = bicicleta.Ano,
+                Numero = bicicleta.Numero,
+                Status = bicicleta.Status,
+            };
             dict.Add(dict.Count, result);
             return (result);
         }
@@ -40,10 +44,17 @@ namespace Equipamento.API.Services
             return dict.ElementAt(id).Value;
         }
 
-        public BicicletaViewModel UpdateBicicleta(BicicletaInsertViewModel bicicletaNovo, int id)
+        public BicicletaViewModel UpdateBicicleta(BicicletaInsertViewModel bicicleta, int id)
         {
-            var bicicletaAntigo = dict.ElementAt(id).Value;
-            var result = _mapper.Map(bicicletaNovo, bicicletaAntigo);
+            var result = new BicicletaViewModel()
+            {
+                Id = id,
+                Marca = bicicleta.Marca,
+                Modelo = bicicleta.Modelo,
+                Ano = bicicleta.Ano,
+                Numero = bicicleta.Numero,
+                Status = bicicleta.Status,
+            };
             dict[id] = result;
             return (result);
         }
@@ -80,7 +91,7 @@ namespace Equipamento.API.Services
             return false;
         }
 
-        public bool isEmpty()
+        public bool IsEmpty()
         {
             if(dict.Count == 0)
             {

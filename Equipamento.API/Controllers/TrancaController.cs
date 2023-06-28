@@ -75,10 +75,12 @@ public class TrancaController : ControllerBase
         if (_trancaService.Contains(id))
         {
             var tranca = _trancaService.GetTranca(id);
-            if(tranca.Bicicleta != null)
+            var bicicleta = _trancaService.GetBicicleta(tranca.Id);
+            if (bicicleta == null)
             {
-                return Ok(tranca.Bicicleta);    
+                return NotFound();
             }
+            return Ok(bicicleta);    
         }
         return NotFound();
     }
@@ -102,6 +104,44 @@ public class TrancaController : ControllerBase
         if(_trancaService.Contains(id))
         {
             var result = _trancaService.Unlock(bicicleta, id);
+            return Ok(result);
         }
+        return NotFound();  
+    }
+
+    [HttpPost]
+    [Route("{id}/trancar")]
+    public IActionResult Lock([FromBody] int? bicicleta, int id)
+    {
+        if(_trancaService.Contains(id))
+        {
+            var result = _trancaService.Lock(bicicleta, id);
+            return Ok(result);
+        }
+        return NotFound();  
+    }
+
+    [HttpPost]
+    [Route("integrarNaRede")]
+    public IActionResult AddToTotem([FromBody] TrancaRedeViewModel viewModel)
+    {
+        if (_trancaService.Contains(viewModel.TrancaId))
+        {
+            var tranca = _trancaService.GetTranca(viewModel.TrancaId);
+            _trancaService.AddTrancaToTotem(tranca, viewModel.TotemId);
+        }
+        return Ok();
+    }
+
+    [HttpPost]
+    [Route("retirarDaRede")]
+    public IActionResult RemoveFromTotem([FromBody] TrancaRedeViewModel viewModel)
+    {
+        if (_trancaService.Contains(viewModel.TrancaId))
+        {
+            var tranca = _trancaService.GetTranca(viewModel.TrancaId);
+            _trancaService.RemoveTrancaFromTotem(tranca, viewModel.TotemId);
+        }
+        return Ok();
     }
 }

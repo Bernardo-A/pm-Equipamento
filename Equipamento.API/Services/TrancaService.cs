@@ -14,18 +14,28 @@ namespace Equipamento.API.Services
         public bool Contains(int id);
         public TrancaViewModel ChangeStatus(int id, string status);
         public bool IsEmpty();
-        public TrancaViewModel Unlock(int bicicletaId, int trancaId);
+        public TrancaViewModel Unlock(int? bicicletaId, int trancaId);
+        public TrancaViewModel Lock(int? bicicletaId, int trancaId);
+        public BicicletaViewModel? GetBicicleta(int trancaId);
+        public void AddTrancaToTotem(TrancaViewModel tranca, int totemId);
+        public void RemoveTrancaFromTotem(TrancaViewModel tranca, int totemId);
     }
 
     public class TrancaService : ITrancaService
     {
         private static readonly Dictionary<int, TrancaViewModel> dict = new();
 
+        private readonly IBicicletaService _bicicletaService;
+
+        private readonly ITotemService _totemService;
+
         private readonly IMapper _mapper;
 
-        public TrancaService(IMapper mapper)
+        public TrancaService(IMapper mapper, IBicicletaService bicicletaService, ITotemService totemService)
         {
             _mapper = mapper;
+            _bicicletaService = bicicletaService;
+            _totemService = totemService;
         }
 
         public TrancaViewModel CreateTranca(TrancaInsertViewModel Tranca)
@@ -89,9 +99,63 @@ namespace Equipamento.API.Services
             return false;
         }
 
-        public TrancaViewModel Unlock(int bicicletaId, int trancaId)
+        public TrancaViewModel Unlock(int? bicicletaId, int trancaId)
         {
+            dict[trancaId].Status = "LIVRE";
+            if (bicicletaId == null)
+            {
+                return dict.ElementAt(trancaId).Value;
+            }
+            dict[trancaId].Bicicleta = null;
+            _bicicletaService.ChangeStatus((int)bicicletaId, "EM_USO");
+            return dict.ElementAt(trancaId).Value;
+        }
 
+        public TrancaViewModel Lock(int? bicicletaId, int trancaId)
+        {
+            dict[trancaId].Status = "OCUPADA";
+            if (bicicletaId == null)
+            {
+                return dict.ElementAt(trancaId).Value;
+            }
+            dict[trancaId].Bicicleta = _bicicletaService.GetBicicleta((int)bicicletaId);
+            _bicicletaService.ChangeStatus((int) bicicletaId, "DISPONIVEL");
+            return dict.ElementAt(trancaId).Value;
+        }
+
+        public BicicletaViewModel? GetBicicleta(int trancaId)
+        {
+            var tranca = dict[trancaId];
+            if(tranca.Bicicleta != null)
+            {
+                var result = tranca.Bicicleta;
+                return result;
+            }
+            return null;
+        }
+
+        public void AddTrancaToTotem(TrancaViewModel tranca, int totemId)
+        {
+            if (_totemService.IsTrancaAssigned(tranca.Id))
+            {
+                _totemService.AddTranca(tranca, totemId);
+                return;
+            }
+
+        }
+
+        public void RemoveTrancaFromTotem(TrancaViewModel tranca, int totemId)
+        {
+            if (_totemService.IsTrancaAssigned(tranca.Id))
+            {
+                _totemService.AddTranca(tranca, totemId);
+                return;
+            }
+        }
+
+        public TotemViewModel GetTotem(int totemId)
+        {
+            return _totemService.GetTotem(totemId);
         }
     }
 }

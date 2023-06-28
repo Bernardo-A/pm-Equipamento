@@ -63,14 +63,32 @@ public class TotemController : ControllerBase
     public IActionResult GetAll()
     {
         _logger.LogInformation("Retornando listas de bicicleta...");
-        if (_totemService.isEmpty())
+        if (_totemService.IsEmpty())
         {
             return NotFound();
         }
         return Ok(_totemService.GetAll());
     }
 
+    [HttpGet]
+    [Route("{idTotem}/trancas")]
+    public IActionResult GetTrancas(int idTotem) 
+    {
+        if (_totemService.Contains(idTotem))
+        {
+            return Ok(_totemService.GetTrancas(idTotem));
+        }
+        return NotFound();
+    }
 
-
-
+    [HttpGet]
+    [Route("{idTotem}/bicicletas")]
+    public IActionResult Getbicicletas(int idTotem)
+    {
+        if (_totemService.Contains(idTotem))
+        {
+            return Ok(_totemService.GetBicicletas(idTotem));
+        }
+        return NotFound();
+    }
 }

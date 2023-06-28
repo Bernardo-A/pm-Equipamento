@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Equipamento.API.ViewModels;
 using static Equipamento.API.Services.TotemService;
+using System.Linq;
 
 namespace Equipamento.API.Services
 {
@@ -12,24 +13,32 @@ namespace Equipamento.API.Services
         public TotemViewModel DeleteTotem(int id);
         public List<TotemViewModel> GetAll();
         public bool Contains(int id);
-        public TotemViewModel ChangeStatus(int id, string status);
-        public bool isEmpty();
+        public bool IsEmpty();
+
+        public List<TrancaViewModel> GetTrancas(int totemId);
+
+        public List<BicicletaViewModel> GetBicicletas(int totemId);
+
+        public void AddTranca(TrancaViewModel tranca, int totemId);
+        public void RemoveTranca(int totemId, int trancaId);
+        public bool IsTrancaAssigned(int trancaId);
     }
 
     public class TotemService : ITotemService
     {
         private static readonly Dictionary<int, TotemViewModel> dict = new();
 
-        private readonly IMapper _mapper;
 
-        public TotemService(IMapper mapper)
+        public TotemService()
         {
-            _mapper = mapper;
         }
 
-        public TotemViewModel CreateTotem(TotemInsertViewModel Totem)
+        public TotemViewModel CreateTotem(TotemInsertViewModel totem)
         {
-            var result = _mapper.Map<TotemInsertViewModel, TotemViewModel>(Totem);
+            var result = new TotemViewModel()
+            {
+                Id = dict.Count,
+            };
             result.Id = dict.Count;
             dict.Add(dict.Count, result);
             return (result);
@@ -40,17 +49,23 @@ namespace Equipamento.API.Services
             return dict.ElementAt(id).Value;
         }
 
-        public TotemViewModel UpdateTotem(TotemInsertViewModel TotemNovo, int id)
+        public TotemViewModel UpdateTotem(TotemInsertViewModel totemNovo, int id)
         {
-            var TotemAntigo = dict.ElementAt(id).Value;
-            var result = _mapper.Map(TotemNovo, TotemAntigo);
+            var totemAntigo = dict.ElementAt(id).Value;
+            var result = new TotemViewModel
+            {
+                Id = totemAntigo.Id,
+                Trancas = totemAntigo.Trancas,
+                Localizacao = totemNovo.Localizacao,
+                Descricao = totemNovo.Descricao,
+            };
             dict[id] = result;
             return (result);
         }
 
         public TotemViewModel DeleteTotem(int id)
         {
-            dict[id].Status = "Excluida";
+            
             return dict.ElementAt(id).Value;
         }
 
@@ -65,12 +80,6 @@ namespace Equipamento.API.Services
             return result;
         }
 
-        public TotemViewModel ChangeStatus(int id, string status)
-        {
-            dict[id].Status = status;
-            return dict.ElementAt(id).Value;
-        }
-
         public bool Contains(int id)
         {
             if (dict.ContainsKey(id))
@@ -79,11 +88,91 @@ namespace Equipamento.API.Services
             }
             return false;
         }
-        public bool isEmpty()
+        public bool IsEmpty()
         {
             if (dict.Count == 0)
             {
                 return true;
+            }
+            return false;
+        }
+
+        public void AddTranca(TrancaViewModel tranca, int totemId)
+        {
+            if (!dict.ContainsKey(totemId))
+            {
+                return;
+            }
+            if(dict[totemId].Trancas == null)
+            {
+                dict[totemId].Trancas = new List<TrancaViewModel> { tranca};
+            }else
+            {
+                dict[totemId]?.Trancas?.Add(tranca);
+            }
+        }
+
+        public List<TrancaViewModel> GetTrancas(int totemId) 
+        {
+            List<TrancaViewModel> result = new();
+            var objects = dict.ElementAt(totemId).Value.Trancas;
+            if(objects?.Count == 0)
+            {
+                return result;
+            }
+            foreach (var value in objects)
+            {
+                result.Add(value);
+            }
+            return result;
+        }
+
+        public List<BicicletaViewModel> GetBicicletas(int totemId)
+        {
+            List<BicicletaViewModel> result = new();
+            var objects = dict.ElementAt(totemId).Value.Trancas;
+            if( objects?.Count == 0)
+            {
+                return result;
+            }
+            result.AddRange(from value in objects
+                            let bicicleta = value.Bicicleta
+                            where bicicleta != null
+                            select value.Bicicleta);
+            return result;
+        }
+
+        public void RemoveTranca(int totemId, int trancaId)
+        {
+            var objects = dict[totemId];
+            if(objects.Trancas != null && objects.Trancas.Count != 0)
+            {
+                foreach(var value in objects.Trancas)
+                {
+                    if(value.Id == trancaId)
+                    {
+                        objects.Trancas.Remove(value);
+                        value.Bicicleta = null;
+                    }
+                }
+            }
+            return;
+        }
+
+        public bool IsTrancaAssigned(int trancaId)
+        {
+            Dictionary<int, TotemViewModel>.ValueCollection objects = dict.Values;
+            foreach (var value in objects)
+            {
+                if (value.Trancas != null && value.Trancas.Count != 0)
+                {
+                    foreach (var tranca in value.Trancas)
+                    {
+                        if (tranca.Id == trancaId)
+                        { return true; }
+                    }
+
+                }
             }
             return false;
         }

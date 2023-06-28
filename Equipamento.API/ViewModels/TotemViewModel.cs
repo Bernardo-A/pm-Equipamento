@@ -1,11 +1,9 @@
 ﻿namespace Equipamento.API.ViewModels
 {
-    public class TotemViewModel
+    public class TotemViewModel : TotemInsertViewModel
     {
-        public int Id { get; set; } = 0;
-        public string? Localizacao { get; set; }
-        public string? Descricao { get; set; }
-        public string? Status { get; set;}
+        public int Id { get; set; }
+        public List<TrancaViewModel>? Trancas { get; set; }
     }
     public class TotemInsertViewModel
     {
