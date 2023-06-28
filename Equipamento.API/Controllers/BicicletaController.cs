@@ -94,25 +94,5 @@ public class BicicletaController : ControllerBase
         }
         return Ok(_bicicletaService.GetAll());
     }
-
-    [HttpPost]
-    [Route("integrarNaRede")]
-    public IActionResult AddToTranca([FromBody] BicicletaRedeAddViewModel viewModel)
-    {
-        if (_bicicletaService.Contains(viewModel.BicicletaId))
-        {
-
-        }
-        return Ok();
-    }
-
-    [HttpPost]
-    [Route("retirarDaRede")]
-    public IActionResult RemoveFromTranca([FromBody] RedeRemoveViewModel view)
-    {
-        return Ok();
-    }
-
-
 }
 

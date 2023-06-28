@@ -20,5 +20,9 @@
     {
         public int BicicletaId { get; set; }
     }
-      
+    
+    public class BicicletaRemoveViewModel : BicicletaRedeAddViewModel 
+    {
+        public string? StatusAcaoReparador { get; set; }
+    }
 }

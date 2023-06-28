@@ -76,7 +76,11 @@ public class TotemController : ControllerBase
     {
         if (_totemService.Contains(idTotem))
         {
-            return Ok(_totemService.GetTrancas(idTotem));
+            var result = _totemService.GetTrancas(idTotem);
+            if(result != null)
+            {
+                return Ok();
+            }
         }
         return NotFound();
     }

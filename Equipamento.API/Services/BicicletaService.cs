@@ -99,5 +99,7 @@ namespace Equipamento.API.Services
             }
             return false;
         }
+
+        
     }
 }

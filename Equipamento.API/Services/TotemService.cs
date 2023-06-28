@@ -7,15 +7,15 @@ namespace Equipamento.API.Services
 {
     public interface ITotemService
     {
-        public TotemViewModel CreateTotem(TotemInsertViewModel Totem);
+        public TotemViewModel CreateTotem(TotemInsertViewModel totem);
         public TotemViewModel GetTotem(int id);
-        public TotemViewModel UpdateTotem(TotemInsertViewModel Totem, int id);
+        public TotemViewModel UpdateTotem(TotemInsertViewModel totemNovo, int id);
         public TotemViewModel DeleteTotem(int id);
         public List<TotemViewModel> GetAll();
         public bool Contains(int id);
         public bool IsEmpty();
 
-        public List<TrancaViewModel> GetTrancas(int totemId);
+        public List<TrancaViewModel>? GetTrancas(int totemId);
 
         public List<BicicletaViewModel> GetBicicletas(int totemId);
 
@@ -112,19 +112,26 @@ namespace Equipamento.API.Services
             }
         }
 
-        public List<TrancaViewModel> GetTrancas(int totemId) 
+        public List<TrancaViewModel>? GetTrancas(int totemId) 
         {
-            List<TrancaViewModel> result = new();
-            var objects = dict.ElementAt(totemId).Value.Trancas;
-            if(objects?.Count == 0)
+            if (dict[totemId].Trancas != null)
             {
-                return result;
+                List<TrancaViewModel> result = new();
+                var objects = dict.ElementAt(totemId).Value.Trancas;
+                if(objects?.Count == 0)
+                {
+                    return result;
+                }
+                if(objects != null)
+                {
+                    foreach (var value in objects)
+                    {
+                        result.Add(value);
+                    }
+                    return result;
+                }
             }
-            foreach (var value in objects)
-            {
-                result.Add(value);
-            }
-            return result;
+            return null;
         }
 
         public List<BicicletaViewModel> GetBicicletas(int totemId)
@@ -162,17 +169,19 @@ namespace Equipamento.API.Services
         public bool IsTrancaAssigned(int trancaId)
         {
             Dictionary<int, TotemViewModel>.ValueCollection objects = dict.Values;
-            foreach (var value in objects)
+            foreach (var value in objects.Select(x => x.Trancas))
             {
-                if (value.Trancas != null && value.Trancas.Count != 0)
+                if(value != null)
                 {
-                    foreach (var tranca in value.Trancas)
+                    foreach(var tranca in value)
                     {
-                        if (tranca.Id == trancaId)
-                        { return true; }
+                        if(tranca.Id == trancaId)
+                        {
+                            return true;
+                        }
                     }
-
                 }
+
             }
             return false;
         }

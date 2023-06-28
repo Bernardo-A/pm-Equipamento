@@ -19,6 +19,8 @@ namespace Equipamento.API.Services
         public BicicletaViewModel? GetBicicleta(int trancaId);
         public void AddTrancaToTotem(TrancaViewModel tranca, int totemId);
         public void RemoveTrancaFromTotem(TrancaViewModel tranca, int totemId);
+        public TrancaViewModel? AddBicicletaToTranca(BicicletaRedeAddViewModel viewModel);
+        public TrancaViewModel? RemoveBicicletaFromTranca(BicicletaRemoveViewModel viewModel);
     }
 
     public class TrancaService : ITrancaService
@@ -101,13 +103,17 @@ namespace Equipamento.API.Services
 
         public TrancaViewModel Unlock(int? bicicletaId, int trancaId)
         {
-            dict[trancaId].Status = "LIVRE";
+            var tranca = dict.ElementAt(trancaId).Value;
+            tranca.Status = "LIVRE";
             if (bicicletaId == null)
             {
                 return dict.ElementAt(trancaId).Value;
             }
-            dict[trancaId].Bicicleta = null;
-            _bicicletaService.ChangeStatus((int)bicicletaId, "EM_USO");
+            if (tranca.Bicicleta != null)
+            {
+                tranca.Bicicleta.Status = "EM_USO";
+                dict[trancaId].Bicicleta = null;
+            }
             return dict.ElementAt(trancaId).Value;
         }
 
@@ -119,14 +125,14 @@ namespace Equipamento.API.Services
                 return dict.ElementAt(trancaId).Value;
             }
             dict[trancaId].Bicicleta = _bicicletaService.GetBicicleta((int)bicicletaId);
-            _bicicletaService.ChangeStatus((int) bicicletaId, "DISPONIVEL");
+            _bicicletaService.ChangeStatus((int)bicicletaId, "DISPONIVEL");
             return dict.ElementAt(trancaId).Value;
         }
 
         public BicicletaViewModel? GetBicicleta(int trancaId)
         {
             var tranca = dict[trancaId];
-            if(tranca.Bicicleta != null)
+            if (tranca.Bicicleta != null)
             {
                 var result = tranca.Bicicleta;
                 return result;
@@ -156,6 +162,31 @@ namespace Equipamento.API.Services
         public TotemViewModel GetTotem(int totemId)
         {
             return _totemService.GetTotem(totemId);
+        }
+        public TrancaViewModel? AddBicicletaToTranca(BicicletaRedeAddViewModel viewModel)
+        {
+            var tranca = dict.ElementAt(viewModel.TrancaId).Value;
+            if(tranca.Bicicleta != null)
+            {
+                return null;
+            }
+            var bicicleta = _bicicletaService.GetBicicleta(viewModel.BicicletaId);
+            bicicleta.Status = "DISPONIVEL";
+            tranca.Bicicleta = bicicleta;
+            return tranca;
+        }
+
+        public TrancaViewModel? RemoveBicicletaFromTranca(BicicletaRemoveViewModel viewModel)
+        {
+            var tranca = dict.ElementAt(viewModel.TrancaId).Value;
+            if (tranca.Bicicleta == null)
+            {
+                return null;
+            }
+            var bicicleta = _bicicletaService.GetBicicleta(viewModel.BicicletaId);
+            bicicleta.Status = viewModel.StatusAcaoReparador;
+            tranca.Bicicleta = null;
+            return tranca;
         }
     }
 }

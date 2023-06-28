@@ -2,6 +2,7 @@
 using Equipamento.API.Services;
 using Equipamento.API.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace Equipamento.API.Controllers;
 
@@ -144,4 +145,34 @@ public class TrancaController : ControllerBase
         }
         return Ok();
     }
+
+    [HttpPost]
+    [Route("/bicicleta/integrarNaRede")]
+    public IActionResult AddBicicletaToTranca([FromBody] BicicletaRedeAddViewModel viewModel)
+    {
+        if (_trancaService.Contains(viewModel.TrancaId))
+        {
+            var result = _trancaService.AddBicicletaToTranca(viewModel);
+            if(result == null)
+            {
+                return BadRequest();
+            }
+        }
+        return Ok();
+    }
+    [HttpPost]
+    [Route("/bicicleta/retirarDaRede")]
+    public IActionResult RemoveBicicletaFromTranca([FromBody] BicicletaRemoveViewModel viewModel)
+    {
+        if (_trancaService.Contains(viewModel.TrancaId))
+        {
+            var result = _trancaService.RemoveBicicletaFromTranca(viewModel);
+            if (result == null)
+            {
+                return BadRequest();
+            }
+        }
+        return Ok();
+    }
+
 }
