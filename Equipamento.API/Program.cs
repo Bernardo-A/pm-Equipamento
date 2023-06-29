@@ -1,4 +1,5 @@
 using Equipamento.API.Services;
+using Equipamento.API.ViewModels;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,8 +11,6 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 
@@ -34,4 +33,5 @@ void ConfigureServices(IServiceCollection services)
 {
     services.AddTransient<IBicicletaService, BicicletaService>();
     services.AddTransient<ITotemService, TotemService>();
+    services.AddTransient<ITrancaService, TrancaService>();
 }

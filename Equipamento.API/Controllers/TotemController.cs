@@ -10,15 +10,12 @@ namespace Equipamento.API.Controllers;
 public class TotemController : ControllerBase
 {
     private readonly ILogger<TotemController> _logger;
-
-    private readonly IMapper _mapper;
-
+    
     private readonly ITotemService _totemService;
 
-    public TotemController(ILogger<TotemController> logger, IMapper mapper, ITotemService totemService)
+    public TotemController(ILogger<TotemController> logger, ITotemService totemService)
     {
         _logger = logger;
-        _mapper = mapper;
         _totemService = totemService;
     }
 
@@ -27,7 +24,9 @@ public class TotemController : ControllerBase
     public IActionResult Create([FromBody] TotemInsertViewModel totem)
     {
         _logger.LogInformation("Criando Totem...");
-        var result = _mapper.Map<TotemInsertViewModel, TotemViewModel>(totem);
+
+        var result = _totemService.CreateTotem(totem);
+
         return Ok(result);
     }
 
@@ -35,11 +34,14 @@ public class TotemController : ControllerBase
     [Route("{id}")]
     public IActionResult Edit([FromBody] TotemInsertViewModel totemNovo, int id)
     {
-
         _logger.LogInformation("Alterando totem...");
-        var totemAntigo = _totemService.GetTotem();
-        var result = _mapper.Map(totemNovo, totemAntigo);
-        return Ok(result);
+
+        if (_totemService.Contains(id))
+        {
+            var result = _totemService.UpdateTotem(totemNovo, id);
+            return Ok(result);
+        }
+        else return NotFound();
     }
 
     [HttpDelete]
@@ -48,9 +50,49 @@ public class TotemController : ControllerBase
     {
         _logger.LogInformation("Deletando totem...");
 
-        var totem = _totemService.GetTotem();
-        totem.Id = id;
-        totem.Status = "Excluida";
-        return Ok();
+        if (_totemService.Contains(id))
+        {
+            _totemService.DeleteTotem(id);
+            return Ok();
+        }
+        else return NotFound();
+    }
+
+    [HttpGet]
+    [Route("")]
+    public IActionResult GetAll()
+    {
+        _logger.LogInformation("Retornando listas de bicicleta...");
+        if (_totemService.IsEmpty())
+        {
+            return NotFound();
+        }
+        return Ok(_totemService.GetAll());
+    }
+
+    [HttpGet]
+    [Route("{idTotem}/trancas")]
+    public IActionResult GetTrancas(int idTotem) 
+    {
+        if (_totemService.Contains(idTotem))
+        {
+            var result = _totemService.GetTrancas(idTotem);
+            if(result != null)
+            {
+                return Ok(result);
+            }
+        }
+        return NotFound();
+    }
+
+    [HttpGet]
+    [Route("{idTotem}/bicicletas")]
+    public IActionResult GetBicicletas(int idTotem)
+    {
+        if (_totemService.Contains(idTotem))
+        {
+            return Ok(_totemService.GetBicicletas(idTotem));
+        }
+        return NotFound();
     }
 }
