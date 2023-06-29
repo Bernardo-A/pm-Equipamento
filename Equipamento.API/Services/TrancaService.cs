@@ -18,8 +18,8 @@ namespace Equipamento.API.Services
         public TrancaViewModel Unlock(int? bicicletaId, int trancaId);
         public TrancaViewModel Lock(int? bicicletaId, int trancaId);
         public BicicletaViewModel? GetBicicleta(int trancaId);
-        public void AddTrancaToTotem(TrancaViewModel tranca, int totemId);
-        public void RemoveTrancaFromTotem(TrancaViewModel tranca, int totemId);
+        public bool AddTrancaToTotem(TrancaViewModel tranca, int totemId);
+        public bool RemoveTrancaFromTotem(TrancaViewModel tranca, int totemId);
         public TrancaViewModel? AddBicicletaToTranca(BicicletaRedeAddViewModel viewModel);
         public TrancaViewModel? RemoveBicicletaFromTranca(BicicletaRemoveViewModel viewModel);
     }
@@ -156,21 +156,24 @@ namespace Equipamento.API.Services
             return null;
         }
 
-        public void AddTrancaToTotem(TrancaViewModel tranca, int totemId)
+        public bool AddTrancaToTotem(TrancaViewModel tranca, int totemId)
         {
-            if (_totemService.IsTrancaAssigned(tranca.Id))
+            if (!_totemService.IsTrancaAssigned(tranca.Id))
             {
                 _totemService.AddTranca(tranca, totemId);
+                return true;
             }
-
+            return false;
         }
 
-        public void RemoveTrancaFromTotem(TrancaViewModel tranca, int totemId)
+        public bool RemoveTrancaFromTotem(TrancaViewModel tranca, int totemId)
         {
             if (_totemService.IsTrancaAssigned(tranca.Id))
             {
-                _totemService.AddTranca(tranca, totemId);
+                _totemService.RemoveTranca(totemId, tranca.Id);
+                return true;
             }
+            return false;
         }
 
         public TotemViewModel GetTotem(int totemId)
