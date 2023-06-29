@@ -50,6 +50,24 @@ public class TotemControllerTest
     }
 
     [Fact]
+    public void EditOnFailureReturnsStatusCode404()
+    {
+
+        var mockTotemService = new Mock<ITotemService>();
+        mockTotemService.Setup(service => service.Contains(It.IsAny<int>())).Returns(false);
+
+        var sut = new TotemController(_logger.Object, mockTotemService.Object);
+
+        var result = (NotFoundResult)sut.Edit(new TotemInsertViewModel
+        {
+            Localizacao = "rio de janeiro",
+            Descricao = "um totem"
+        }, (It.IsAny<int>()));
+
+        result.StatusCode.Should().Be(404);
+    }
+
+    [Fact]
     public void DeleteOnSuccessReturnStatusCode200() 
     {
         var mockTotemService = new Mock<ITotemService>();
@@ -63,64 +81,104 @@ public class TotemControllerTest
         result.StatusCode.Should().Be(200);
     }
 
-    //[Fact]
-    //public void DeleteOnSucessReturnStatusCode200()
-    //{
-    //    var mockTotemService = new Mock<ITotemService>();
-    //    mockTotemService.Setup(service => service.GetTotem()).Returns(new TotemViewModel());
+    [Fact]
+    public void DeleteOnFailureReturnStatusCode404()
+    {
+        var mockTotemService = new Mock<ITotemService>();
+        mockTotemService.Setup(service => service.Contains(It.IsAny<int>())).Returns(false);
 
-    //    var sut = new TotemController(_logger.Object, _mapper.Object, mockTotemService.Object);
+        var sut = new TotemController(_logger.Object, mockTotemService.Object);
 
-    //    var result = (OkResult)sut.Delete(0);
+        var result = (NotFoundResult)sut.Delete(It.IsAny<int>());
 
-    //    result.StatusCode.Should().Be(200);
-    //}
+        result.StatusCode.Should().Be(404);
+    }
 
-    //[Fact]
-    //public void TotemServiceGetTotemReturnsTotem()
-    //{
-    //    var sut = new TotemService();
+    [Fact]
+    public void GetAllOnSuccessReturnStatusCode200()
+    {
 
-    //    var result = sut.GetTotem();
+        var mockTotemService = new Mock<ITotemService>();
+        mockTotemService.Setup(service => service.IsEmpty()).Returns(false);
 
-    //    Assert.IsType<TotemViewModel>(result);
-    //}
+        var sut = new TotemController(_logger.Object, mockTotemService.Object);
 
-    //[Fact]
-    //public void TesttotemViewModelGet()
-    //{
-    //    var totemService = new TotemService(); ;
+        var result = (OkObjectResult)sut.GetAll();
 
-    //    var totem = totemService.GetTotem();
+        result.StatusCode.Should().Be(200);
+    }
 
-    //    var result = new TotemViewModel();
-    //    {
-    //        result.Id = totem.Id;
-    //        result.Localizacao = totem.Localizacao;
-    //        result.Descricao = totem.Descricao;
-    //        result.Status = totem.Status;
-    //    }
+    [Fact]
+    public void GetAllOnFailureReturnStatusCode404()
+    {
 
-    //    result.Should().BeEquivalentTo(totem);
-    //}
+        var mockTotemService = new Mock<ITotemService>();
+        mockTotemService.Setup(service => service.IsEmpty()).Returns(true);
 
-    //[Fact]
-    //public void TestTotemInsertViewModelGet()
-    //{
-    //    var totem = new TotemInsertViewModel
-    //    {
-    //        Localizacao = "Rio de Janeiro",
-    //        Descricao = "um totem"
-    //    };
+        var sut = new TotemController(_logger.Object, mockTotemService.Object);
 
-    //    var result = new TotemInsertViewModel();
-    //    {
-    //        result.Localizacao = totem.Localizacao;
-    //        result.Descricao = totem.Descricao;
-    //    }
+        var result = (NotFoundResult)sut.GetAll();
 
-    //    result.Should().BeEquivalentTo(totem);
-    //}
+        result.StatusCode.Should().Be(404);
+    }
 
+    [Fact]
+    public void GetTrancasOnSuccessReturnStatusCode200()
+    {
+
+        var mockTotemService = new Mock<ITotemService>();
+        mockTotemService.Setup(service => service.Contains(It.IsAny<int>())).Returns(true);
+        mockTotemService.Setup(service => service.GetTrancas(It.IsAny<int>())).Returns(new List<TrancaViewModel>());
+
+        var sut = new TotemController(_logger.Object, mockTotemService.Object);
+
+        var result = (OkObjectResult)sut.GetTrancas(It.IsAny<int>());
+
+        result.StatusCode.Should().Be(200);
+    }
+
+    [Fact]
+    public void GetTrancasOnFailureReturnStatusCode404()
+    {
+
+        var mockTotemService = new Mock<ITotemService>();
+        mockTotemService.Setup(service => service.Contains(It.IsAny<int>())).Returns(false);
+
+        var sut = new TotemController(_logger.Object, mockTotemService.Object);
+
+        var result = (NotFoundResult)sut.GetTrancas(It.IsAny<int>());
+
+        result.StatusCode.Should().Be(404);
+    }
+
+
+
+    [Fact]
+    public void GetBicicletasOnSuccessReturnStatusCode200()
+    {
+
+        var mockTotemService = new Mock<ITotemService>();
+        mockTotemService.Setup(service => service.Contains(It.IsAny<int>())).Returns(true);
+
+        var sut = new TotemController(_logger.Object, mockTotemService.Object);
+
+        var result = (OkObjectResult)sut.GetBicicletas(It.IsAny<int>());
+
+        result.StatusCode.Should().Be(200);
+    }
+
+    [Fact]
+    public void GetBicicletasOnFailureReturnStatusCode404()
+    {
+
+        var mockTotemService = new Mock<ITotemService>();
+        mockTotemService.Setup(service => service.Contains(It.IsAny<int>())).Returns(false);
+
+        var sut = new TotemController(_logger.Object, mockTotemService.Object);
+
+        var result = (NotFoundResult)sut.GetBicicletas(It.IsAny<int>());
+
+        result.StatusCode.Should().Be(404);
+    }
 
 }

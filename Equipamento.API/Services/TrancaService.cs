@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
 using Equipamento.API.ViewModels;
+using System.Diagnostics;
 using static Equipamento.API.Services.TrancaService;
 
 namespace Equipamento.API.Services
 {
     public interface ITrancaService
     {
-        public TrancaViewModel CreateTranca(TrancaInsertViewModel Tranca);
+        public TrancaViewModel CreateTranca(TrancaInsertViewModel tranca);
         public TrancaViewModel GetTranca(int id);
         public TrancaViewModel UpdateTranca(TrancaInsertViewModel tranca, int id);
         public TrancaViewModel DeleteTranca(int id);
@@ -31,19 +32,25 @@ namespace Equipamento.API.Services
 
         private readonly ITotemService _totemService;
 
-        private readonly IMapper _mapper;
-
-        public TrancaService(IMapper mapper, IBicicletaService bicicletaService, ITotemService totemService)
+        public TrancaService(IBicicletaService bicicletaService, ITotemService totemService)
         {
-            _mapper = mapper;
             _bicicletaService = bicicletaService;
             _totemService = totemService;
         }
 
-        public TrancaViewModel CreateTranca(TrancaInsertViewModel Tranca)
+
+        public TrancaViewModel CreateTranca(TrancaInsertViewModel tranca)
         {
-            var result = _mapper.Map<TrancaInsertViewModel, TrancaViewModel>(Tranca);
-            result.Id = dict.Count;
+            var result = new TrancaViewModel
+            {
+                Id = dict.Count,
+                Bicicleta = null,
+                Numero = tranca.Numero,
+                Localizacao = tranca.Localizacao,
+                AnoDeFabricacao = tranca.AnoDeFabricacao,
+                Modelo = tranca.Modelo,
+                Status = tranca.Status
+            };
             dict.Add(dict.Count, result);
             return (result);
         }
@@ -55,8 +62,17 @@ namespace Equipamento.API.Services
 
         public TrancaViewModel UpdateTranca(TrancaInsertViewModel tranca, int id)
         {
-            var TrancaAntigo = dict.ElementAt(id).Value;
-            var result = _mapper.Map(tranca, TrancaAntigo);
+            var trancaAntigo = dict.ElementAt(id).Value;
+            var result = new TrancaViewModel
+            {
+                Id = trancaAntigo.Id,
+                Bicicleta = trancaAntigo.Bicicleta,
+                Numero = tranca.Numero,
+                Localizacao = tranca.Localizacao,
+                AnoDeFabricacao = tranca.AnoDeFabricacao,
+                Modelo = tranca.Modelo,
+                Status = tranca.Status
+            };
             dict[id] = result;
             return (result);
         }
@@ -84,7 +100,7 @@ namespace Equipamento.API.Services
             return dict.ElementAt(id).Value;
         }
 
-        public bool Contains(int id)
+        public virtual bool Contains(int id)
         {
             if (dict.ContainsKey(id))
             {

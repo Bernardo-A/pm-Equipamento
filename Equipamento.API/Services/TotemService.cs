@@ -27,8 +27,6 @@ namespace Equipamento.API.Services
     public class TotemService : ITotemService
     {
         private static readonly Dictionary<int, TotemViewModel> dict = new();
-
-
         public TotemService()
         {
         }

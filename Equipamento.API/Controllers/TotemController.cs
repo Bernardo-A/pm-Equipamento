@@ -79,7 +79,7 @@ public class TotemController : ControllerBase
             var result = _totemService.GetTrancas(idTotem);
             if(result != null)
             {
-                return Ok();
+                return Ok(result);
             }
         }
         return NotFound();
@@ -87,7 +87,7 @@ public class TotemController : ControllerBase
 
     [HttpGet]
     [Route("{idTotem}/bicicletas")]
-    public IActionResult Getbicicletas(int idTotem)
+    public IActionResult GetBicicletas(int idTotem)
     {
         if (_totemService.Contains(idTotem))
         {

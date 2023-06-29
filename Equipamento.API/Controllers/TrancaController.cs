@@ -130,8 +130,9 @@ public class TrancaController : ControllerBase
         {
             var tranca = _trancaService.GetTranca(viewModel.TrancaId);
             _trancaService.AddTrancaToTotem(tranca, viewModel.TotemId);
+            return Ok();
         }
-        return Ok();
+        return NotFound();
     }
 
     [HttpPost]
@@ -142,8 +143,9 @@ public class TrancaController : ControllerBase
         {
             var tranca = _trancaService.GetTranca(viewModel.TrancaId);
             _trancaService.RemoveTrancaFromTotem(tranca, viewModel.TotemId);
+            return Ok();
         }
-        return Ok();
+        return NotFound();
     }
 
     [HttpPost]
