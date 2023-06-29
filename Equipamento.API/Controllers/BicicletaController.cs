@@ -71,7 +71,7 @@ public class BicicletaController : ControllerBase
     }
 
     [HttpPost]
-    [Route("{id}/status/{statusEnum}")]
+    [Route("{id}/status/{status}")]
     public IActionResult ChangeStatus(int id, string status)
     {
         _logger.LogInformation("Alterando status da bicicleta...");
