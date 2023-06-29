@@ -148,10 +148,10 @@ namespace Equipamento.API.Services
 
         public void RemoveTranca(int totemId, int trancaId)
         {
-            var objects = dict[totemId];
+            var objects = dict.ElementAt(totemId).Value;
             if(objects.Trancas != null && objects.Trancas.Count != 0)
             {
-                foreach(var value in objects.Trancas)
+                foreach(var value in objects.Trancas.ToList())
                 {
                     if(value.Id == trancaId)
                     {

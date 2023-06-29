@@ -129,8 +129,11 @@ public class TrancaController : ControllerBase
         if (_trancaService.Contains(viewModel.TrancaId))
         {
             var tranca = _trancaService.GetTranca(viewModel.TrancaId);
-            _trancaService.AddTrancaToTotem(tranca, viewModel.TotemId);
-            return Ok();
+            if (_trancaService.AddTrancaToTotem(tranca, viewModel.TotemId))
+            {
+                return Ok();
+            }
+            else return BadRequest();
         }
         return NotFound();
     }
@@ -142,8 +145,11 @@ public class TrancaController : ControllerBase
         if (_trancaService.Contains(viewModel.TrancaId))
         {
             var tranca = _trancaService.GetTranca(viewModel.TrancaId);
-            _trancaService.RemoveTrancaFromTotem(tranca, viewModel.TotemId);
-            return Ok();
+            if (_trancaService.RemoveTrancaFromTotem(tranca, viewModel.TotemId))
+            {
+                return Ok();
+            }
+            else return BadRequest();
         }
         return NotFound();
     }
