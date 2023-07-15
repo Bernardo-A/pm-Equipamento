@@ -1,27 +1,27 @@
-﻿namespace Equipamento.API.ViewModels
+﻿namespace Equipamento.API.Models
 {
-    public class RedeAddViewModel 
+    public class RedeDTO 
     {
         public int TrancaId { get; set; }
         public int FuncionarioId { get; set;}
     }
     
-    public class RedeRemoveViewModel : RedeAddViewModel
+    public class RedeRemoveDTO : RedeDTO
     {
         public int StatusAcaoReparador { get; set; }
     }
 
-    public class TrancaRedeViewModel : RedeAddViewModel 
+    public class TrancaRedeDTO : RedeDTO 
     {
         public int TotemId { get; set; }
     }
 
-    public class BicicletaRedeAddViewModel : RedeAddViewModel
+    public class BicicletaRedeDTO : RedeDTO
     {
         public int BicicletaId { get; set; }
     }
     
-    public class BicicletaRemoveViewModel : BicicletaRedeAddViewModel 
+    public class BicicletaRemoveDTO : BicicletaRedeDTO 
     {
         public string? StatusAcaoReparador { get; set; }
     }

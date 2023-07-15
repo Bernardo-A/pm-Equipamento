@@ -1,7 +1,7 @@
 using AutoMapper;
 using Equipamento.API.Controllers;
 using Equipamento.API.Services;
-using Equipamento.API.ViewModels;
+using Equipamento.API.Models;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -22,7 +22,7 @@ public class TotemControllerTest
 
         var sut = new TotemController(_logger.Object, mockTotemService.Object);
 
-        var result = (OkObjectResult)sut.Create(new TotemInsertViewModel
+        var result = (OkObjectResult)sut.Create(new TotemDTO
         {
             Localizacao = "Rio de Janeiro",
             Descricao = "um totem"
@@ -40,7 +40,7 @@ public class TotemControllerTest
 
         var sut = new TotemController(_logger.Object, mockTotemService.Object);
 
-        var result = (OkObjectResult)sut.Edit(new TotemInsertViewModel
+        var result = (OkObjectResult)sut.Edit(new TotemDTO
         {
             Localizacao = "rio de janeiro",
             Descricao = "um totem"
@@ -58,7 +58,7 @@ public class TotemControllerTest
 
         var sut = new TotemController(_logger.Object, mockTotemService.Object);
 
-        var result = (NotFoundResult)sut.Edit(new TotemInsertViewModel
+        var result = (NotFoundResult)sut.Edit(new TotemDTO
         {
             Localizacao = "rio de janeiro",
             Descricao = "um totem"
@@ -128,7 +128,7 @@ public class TotemControllerTest
 
         var mockTotemService = new Mock<ITotemService>();
         mockTotemService.Setup(service => service.Contains(It.IsAny<int>())).Returns(true);
-        mockTotemService.Setup(service => service.GetTrancas(It.IsAny<int>())).Returns(new List<TrancaViewModel>());
+        mockTotemService.Setup(service => service.GetTrancas(It.IsAny<int>())).Returns(new List<TrancaModel>());
 
         var sut = new TotemController(_logger.Object, mockTotemService.Object);
 

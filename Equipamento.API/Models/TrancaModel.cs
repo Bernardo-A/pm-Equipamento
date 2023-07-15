@@ -1,11 +1,11 @@
-﻿namespace Equipamento.API.ViewModels
+﻿namespace Equipamento.API.Models
 {
-    public class TrancaViewModel : TrancaInsertViewModel
+    public class TrancaModel : TrancaDTO
     {
         public int Id { get; set; }
-        public BicicletaViewModel? Bicicleta { get; set; }
+        public BicicletaModel? Bicicleta { get; set; }
     }
-    public class TrancaInsertViewModel
+    public class TrancaDTO
     {
         public int? Numero { get; set; }
         public string? Localizacao { get; set; }

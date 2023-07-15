@@ -1,5 +1,5 @@
 using Equipamento.API.Services;
-using Equipamento.API.ViewModels;
+using Equipamento.API.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 

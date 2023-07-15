@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Equipamento.API.ViewModels;
+using Equipamento.API.Models;
 using System.Diagnostics;
 using static Equipamento.API.Services.TrancaService;
 
@@ -7,26 +7,26 @@ namespace Equipamento.API.Services
 {
     public interface ITrancaService
     {
-        public TrancaViewModel CreateTranca(TrancaInsertViewModel tranca);
-        public TrancaViewModel GetTranca(int id);
-        public TrancaViewModel UpdateTranca(TrancaInsertViewModel tranca, int id);
-        public TrancaViewModel DeleteTranca(int id);
-        public List<TrancaViewModel> GetAll();
+        public TrancaModel CreateTranca(TrancaDTO tranca);
+        public TrancaModel GetTranca(int id);
+        public TrancaModel UpdateTranca(TrancaDTO tranca, int id);
+        public TrancaModel DeleteTranca(int id);
+        public List<TrancaModel> GetAll();
         public bool Contains(int id);
-        public TrancaViewModel ChangeStatus(int id, string status);
+        public TrancaModel ChangeStatus(int id, string status);
         public bool IsEmpty();
-        public TrancaViewModel Unlock(int? bicicletaId, int trancaId);
-        public TrancaViewModel Lock(int? bicicletaId, int trancaId);
-        public BicicletaViewModel? GetBicicleta(int trancaId);
-        public bool AddTrancaToTotem(TrancaViewModel tranca, int totemId);
-        public bool RemoveTrancaFromTotem(TrancaViewModel tranca, int totemId);
-        public TrancaViewModel? AddBicicletaToTranca(BicicletaRedeAddViewModel viewModel);
-        public TrancaViewModel? RemoveBicicletaFromTranca(BicicletaRemoveViewModel viewModel);
+        public TrancaModel Unlock(int? bicicletaId, int trancaId);
+        public TrancaModel Lock(int? bicicletaId, int trancaId);
+        public BicicletaModel? GetBicicleta(int trancaId);
+        public bool AddTrancaToTotem(TrancaModel tranca, int totemId);
+        public bool RemoveTrancaFromTotem(TrancaModel tranca, int totemId);
+        public TrancaModel? AddBicicletaToTranca(BicicletaRedeDTO viewModel);
+        public TrancaModel? RemoveBicicletaFromTranca(BicicletaRemoveDTO viewModel);
     }
 
     public class TrancaService : ITrancaService
     {
-        private static readonly Dictionary<int, TrancaViewModel> dict = new();
+        private static readonly Dictionary<int, TrancaModel> dict = new();
 
         private readonly IBicicletaService _bicicletaService;
 
@@ -39,9 +39,9 @@ namespace Equipamento.API.Services
         }
 
 
-        public TrancaViewModel CreateTranca(TrancaInsertViewModel tranca)
+        public TrancaModel CreateTranca(TrancaDTO tranca)
         {
-            var result = new TrancaViewModel
+            var result = new TrancaModel
             {
                 Id = dict.Count,
                 Bicicleta = null,
@@ -55,15 +55,15 @@ namespace Equipamento.API.Services
             return (result);
         }
 
-        public TrancaViewModel GetTranca(int id)
+        public TrancaModel GetTranca(int id)
         {
             return dict.ElementAt(id).Value;
         }
 
-        public TrancaViewModel UpdateTranca(TrancaInsertViewModel tranca, int id)
+        public TrancaModel UpdateTranca(TrancaDTO tranca, int id)
         {
             var trancaAntigo = dict.ElementAt(id).Value;
-            var result = new TrancaViewModel
+            var result = new TrancaModel
             {
                 Id = trancaAntigo.Id,
                 Bicicleta = trancaAntigo.Bicicleta,
@@ -77,16 +77,16 @@ namespace Equipamento.API.Services
             return (result);
         }
 
-        public TrancaViewModel DeleteTranca(int id)
+        public TrancaModel DeleteTranca(int id)
         {
             dict[id].Status = "Excluida";
             return dict.ElementAt(id).Value;
         }
 
-        public List<TrancaViewModel> GetAll()
+        public List<TrancaModel> GetAll()
         {
-            List<TrancaViewModel> result = new();
-            Dictionary<int, TrancaViewModel>.ValueCollection objects = dict.Values;
+            List<TrancaModel> result = new();
+            Dictionary<int, TrancaModel>.ValueCollection objects = dict.Values;
             foreach (var value in objects)
             {
                 result.Add(value);
@@ -94,7 +94,7 @@ namespace Equipamento.API.Services
             return result;
         }
 
-        public TrancaViewModel ChangeStatus(int id, string status)
+        public TrancaModel ChangeStatus(int id, string status)
         {
             dict[id].Status = status;
             return dict.ElementAt(id).Value;
@@ -117,7 +117,7 @@ namespace Equipamento.API.Services
             return false;
         }
 
-        public TrancaViewModel Unlock(int? bicicletaId, int trancaId)
+        public TrancaModel Unlock(int? bicicletaId, int trancaId)
         {
             var tranca = dict.ElementAt(trancaId).Value;
             tranca.Status = "LIVRE";
@@ -133,7 +133,7 @@ namespace Equipamento.API.Services
             return dict.ElementAt(trancaId).Value;
         }
 
-        public TrancaViewModel Lock(int? bicicletaId, int trancaId)
+        public TrancaModel Lock(int? bicicletaId, int trancaId)
         {
             dict[trancaId].Status = "OCUPADA";
             if (bicicletaId == null)
@@ -145,7 +145,7 @@ namespace Equipamento.API.Services
             return dict.ElementAt(trancaId).Value;
         }
 
-        public BicicletaViewModel? GetBicicleta(int trancaId)
+        public BicicletaModel? GetBicicleta(int trancaId)
         {
             var tranca = dict[trancaId];
             if (tranca.Bicicleta != null)
@@ -156,7 +156,7 @@ namespace Equipamento.API.Services
             return null;
         }
 
-        public bool AddTrancaToTotem(TrancaViewModel tranca, int totemId)
+        public bool AddTrancaToTotem(TrancaModel tranca, int totemId)
         {
             if (!_totemService.IsTrancaAssigned(tranca.Id))
             {
@@ -166,7 +166,7 @@ namespace Equipamento.API.Services
             return false;
         }
 
-        public bool RemoveTrancaFromTotem(TrancaViewModel tranca, int totemId)
+        public bool RemoveTrancaFromTotem(TrancaModel tranca, int totemId)
         {
             if (_totemService.IsTrancaAssigned(tranca.Id))
             {
@@ -176,11 +176,11 @@ namespace Equipamento.API.Services
             return false;
         }
 
-        public TotemViewModel GetTotem(int totemId)
+        public TotemModel GetTotem(int totemId)
         {
             return _totemService.GetTotem(totemId);
         }
-        public TrancaViewModel? AddBicicletaToTranca(BicicletaRedeAddViewModel viewModel)
+        public TrancaModel? AddBicicletaToTranca(BicicletaRedeDTO viewModel)
         {
             var tranca = dict.ElementAt(viewModel.TrancaId).Value;
             if(tranca.Bicicleta != null)
@@ -193,7 +193,7 @@ namespace Equipamento.API.Services
             return tranca;
         }
 
-        public TrancaViewModel? RemoveBicicletaFromTranca(BicicletaRemoveViewModel viewModel)
+        public TrancaModel? RemoveBicicletaFromTranca(BicicletaRemoveDTO viewModel)
         {
             var tranca = dict.ElementAt(viewModel.TrancaId).Value;
             if (tranca.Bicicleta == null)

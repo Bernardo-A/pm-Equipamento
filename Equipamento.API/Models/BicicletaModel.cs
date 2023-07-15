@@ -1,10 +1,10 @@
-﻿namespace Equipamento.API.ViewModels
+﻿namespace Equipamento.API.Models
 {
-    public class BicicletaViewModel : BicicletaInsertViewModel
+    public class BicicletaModel : BicicletaDTO
     {   
         public int Id { get; set; } 
     }
-    public class BicicletaInsertViewModel
+    public class BicicletaDTO
     {
         public string? Marca { get; set; }
         public string? Modelo { get; set; }

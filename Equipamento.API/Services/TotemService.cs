@@ -1,56 +1,59 @@
 ﻿using AutoMapper;
-using Equipamento.API.ViewModels;
+using Equipamento.API.Models;
 using static Equipamento.API.Services.TotemService;
 using System.Linq;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Equipamento.API.Services
 {
     public interface ITotemService
     {
-        public TotemViewModel CreateTotem(TotemInsertViewModel totem);
-        public TotemViewModel GetTotem(int id);
-        public TotemViewModel UpdateTotem(TotemInsertViewModel totemNovo, int id);
-        public TotemViewModel DeleteTotem(int id);
-        public List<TotemViewModel> GetAll();
+        public TotemModel CreateTotem(TotemDTO totem);
+        public TotemModel GetTotem(int id);
+        public TotemModel UpdateTotem(TotemDTO totemNovo, int id);
+        public void DeleteTotem(int id);
+        public List<TotemModel> GetAll();
         public bool Contains(int id);
         public bool IsEmpty();
 
-        public List<TrancaViewModel>? GetTrancas(int totemId);
+        public List<TrancaModel>? GetTrancas(int totemId);
 
-        public List<BicicletaViewModel> GetBicicletas(int totemId);
+        public List<BicicletaModel> GetBicicletas(int totemId);
 
-        public void AddTranca(TrancaViewModel tranca, int totemId);
+        public void AddTranca(TrancaModel tranca, int totemId);
         public void RemoveTranca(int totemId, int trancaId);
         public bool IsTrancaAssigned(int trancaId);
     }
 
     public class TotemService : ITotemService
     {
-        private static readonly Dictionary<int, TotemViewModel> dict = new();
+        private static readonly Dictionary<int, TotemModel> dict = new();
         public TotemService()
         {
         }
 
-        public TotemViewModel CreateTotem(TotemInsertViewModel totem)
+        public TotemModel CreateTotem(TotemDTO totem)
         {
-            var result = new TotemViewModel()
+            var result = new TotemModel()
             {
                 Id = dict.Count,
+                Localizacao = totem.Localizacao,
+                Descricao = totem.Descricao,    
             };
-            result.Id = dict.Count;
             dict.Add(dict.Count, result);
             return (result);
         }
 
-        public TotemViewModel GetTotem(int id)
+        public TotemModel GetTotem(int id)
         {
             return dict.ElementAt(id).Value;
         }
 
-        public TotemViewModel UpdateTotem(TotemInsertViewModel totemNovo, int id)
+        public TotemModel UpdateTotem(TotemDTO totemNovo, int id)
         {
             var totemAntigo = dict.ElementAt(id).Value;
-            var result = new TotemViewModel
+            var result = new TotemModel
             {
                 Id = totemAntigo.Id,
                 Trancas = totemAntigo.Trancas,
@@ -61,15 +64,15 @@ namespace Equipamento.API.Services
             return (result);
         }
 
-        public virtual TotemViewModel DeleteTotem(int id)
+        public virtual void DeleteTotem(int id)
         {
-            return dict.ElementAt(id).Value;
+            dict.Remove(id);
         }
 
-        public List<TotemViewModel> GetAll()
+        public List<TotemModel> GetAll()
         {
-            List<TotemViewModel> result = new();
-            Dictionary<int, TotemViewModel>.ValueCollection objects = dict.Values;
+            List<TotemModel> result = new();
+            Dictionary<int, TotemModel>.ValueCollection objects = dict.Values;
             foreach (var value in objects)
             {
                 result.Add(value);
@@ -94,7 +97,7 @@ namespace Equipamento.API.Services
             return false;
         }
 
-        public void AddTranca(TrancaViewModel tranca, int totemId)
+        public void AddTranca(TrancaModel tranca, int totemId)
         {
             if (!dict.ContainsKey(totemId))
             {
@@ -102,18 +105,18 @@ namespace Equipamento.API.Services
             }
             if(dict[totemId].Trancas == null)
             {
-                dict[totemId].Trancas = new List<TrancaViewModel> { tranca};
+                dict[totemId].Trancas = new List<TrancaModel> { tranca};
             }else
             {
                 dict[totemId]?.Trancas?.Add(tranca);
             }
         }
 
-        public List<TrancaViewModel>? GetTrancas(int totemId) 
+        public List<TrancaModel>? GetTrancas(int totemId) 
         {
             if (dict[totemId].Trancas != null)
             {
-                List<TrancaViewModel> result = new();
+                List<TrancaModel> result = new();
                 var objects = dict.ElementAt(totemId).Value.Trancas;
                 if(objects?.Count == 0)
                 {
@@ -131,9 +134,9 @@ namespace Equipamento.API.Services
             return null;
         }
 
-        public List<BicicletaViewModel> GetBicicletas(int totemId)
+        public List<BicicletaModel> GetBicicletas(int totemId)
         {
-            List<BicicletaViewModel> result = new();
+            List<BicicletaModel> result = new();
             var objects = dict.ElementAt(totemId).Value.Trancas;
             if( objects?.Count == 0)
             {
@@ -164,7 +167,7 @@ namespace Equipamento.API.Services
 
         public bool IsTrancaAssigned(int trancaId)
         {
-            Dictionary<int, TotemViewModel>.ValueCollection objects = dict.Values;
+            Dictionary<int, TotemModel>.ValueCollection objects = dict.Values;
             foreach (var value in objects.Select(x => x.Trancas))
             {
                 if(value != null)
