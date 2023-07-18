@@ -17,7 +17,7 @@ namespace Equipamento.Tests
         {
             var sut = new BicicletaService();
 
-            var result = sut.CreateBicicleta(new BicicletaDTO
+            var result = sut.CreateBicicleta(new BicicletaDto
             {
                 Marca = "caloi",
                 Modelo = "caloi 1000",
@@ -33,7 +33,7 @@ namespace Equipamento.Tests
         public void DeleteOnSuccessReturnBicicletaModel()
         {
             var sut = new BicicletaService();
-            sut.CreateBicicleta(new BicicletaDTO
+            sut.CreateBicicleta(new BicicletaDto
             {
                 Marca = "caloi",
                 Modelo = "caloi 1000",
@@ -51,7 +51,7 @@ namespace Equipamento.Tests
         public void GetOnSuccessReturnBicicletaModel()
         {
             var sut = new BicicletaService();
-            sut.CreateBicicleta(new BicicletaDTO
+            sut.CreateBicicleta(new BicicletaDto
             {
                 Marca = "caloi",
                 Modelo = "caloi 1000",
@@ -69,7 +69,7 @@ namespace Equipamento.Tests
         public void UpdateOnSuccessReturnBicicletaModel()
         {
             var sut = new BicicletaService();
-            sut.CreateBicicleta(new BicicletaDTO
+            sut.CreateBicicleta(new BicicletaDto
             {
                 Marca = "caloi",
                 Modelo = "caloi 1000",
@@ -78,7 +78,7 @@ namespace Equipamento.Tests
                 Status = "nova",
             });
 
-            var result = sut.UpdateBicicleta(new BicicletaDTO
+            var result = sut.UpdateBicicleta(new BicicletaDto
             {
                 Marca = "caloi",
                 Modelo = "caloi 1000",
@@ -104,7 +104,7 @@ namespace Equipamento.Tests
         public void ChangeStatusOnSuccessReturnBicicletaModel()
         {
             var sut = new BicicletaService();
-            sut.CreateBicicleta(new BicicletaDTO
+            sut.CreateBicicleta(new BicicletaDto
             {
                 Marca = "caloi",
                 Modelo = "caloi 1000",
@@ -122,7 +122,7 @@ namespace Equipamento.Tests
         public void ContainsOnSucessReturnsTrue()
         {
             var sut = new BicicletaService();
-            sut.CreateBicicleta(new BicicletaDTO
+            sut.CreateBicicleta(new BicicletaDto
             {
                 Marca = "caloi",
                 Modelo = "caloi 1000",
@@ -140,7 +140,7 @@ namespace Equipamento.Tests
         public void IsEmptyOnEmptyReturnsFalse()
         {
             var sut = new BicicletaService();
-            sut.CreateBicicleta(new BicicletaDTO
+            sut.CreateBicicleta(new BicicletaDto
             {
                 Marca = "caloi",
                 Modelo = "caloi 1000",

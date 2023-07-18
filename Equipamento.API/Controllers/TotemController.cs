@@ -21,7 +21,7 @@ public class TotemController : ControllerBase
 
     [HttpPost]
     [Route("")]
-    public IActionResult Create([FromBody] TotemDTO totem)
+    public IActionResult Create([FromBody] TotemDto totem)
     {
         _logger.LogInformation("Criando Totem...");
 
@@ -32,7 +32,7 @@ public class TotemController : ControllerBase
 
     [HttpPut]
     [Route("{id}")]
-    public IActionResult Edit([FromBody] TotemDTO totemNovo, int id)
+    public IActionResult Edit([FromBody] TotemDto totemNovo, int id)
     {
         _logger.LogInformation("Alterando totem...");
 

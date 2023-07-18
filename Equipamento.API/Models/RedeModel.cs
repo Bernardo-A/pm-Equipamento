@@ -1,27 +1,27 @@
 ﻿namespace Equipamento.API.Models
 {
-    public class RedeDTO 
+    public class RedeDto 
     {
         public int TrancaId { get; set; }
         public int FuncionarioId { get; set;}
     }
     
-    public class RedeRemoveDTO : RedeDTO
+    public class RedeRemoveDto : RedeDto
     {
         public int StatusAcaoReparador { get; set; }
     }
 
-    public class TrancaRedeDTO : RedeDTO 
+    public class TrancaRedeDto : RedeDto 
     {
         public int TotemId { get; set; }
     }
 
-    public class BicicletaRedeDTO : RedeDTO
+    public class BicicletaRedeDto : RedeDto
     {
         public int BicicletaId { get; set; }
     }
     
-    public class BicicletaRemoveDTO : BicicletaRedeDTO 
+    public class BicicletaRemoveDto : BicicletaRedeDto 
     {
         public string? StatusAcaoReparador { get; set; }
     }

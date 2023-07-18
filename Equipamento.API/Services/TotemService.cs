@@ -9,9 +9,9 @@ namespace Equipamento.API.Services
 {
     public interface ITotemService
     {
-        public TotemModel CreateTotem(TotemDTO totem);
+        public TotemModel CreateTotem(TotemDto totem);
         public TotemModel GetTotem(int id);
-        public TotemModel UpdateTotem(TotemDTO totemNovo, int id);
+        public TotemModel UpdateTotem(TotemDto totemNovo, int id);
         public void DeleteTotem(int id);
         public List<TotemModel> GetAll();
         public bool Contains(int id);
@@ -33,7 +33,7 @@ namespace Equipamento.API.Services
         {
         }
 
-        public TotemModel CreateTotem(TotemDTO totem)
+        public TotemModel CreateTotem(TotemDto totem)
         {
             var result = new TotemModel()
             {
@@ -50,7 +50,7 @@ namespace Equipamento.API.Services
             return dict.ElementAt(id).Value;
         }
 
-        public TotemModel UpdateTotem(TotemDTO totemNovo, int id)
+        public TotemModel UpdateTotem(TotemDto totemNovo, int id)
         {
             var totemAntigo = dict.ElementAt(id).Value;
             var result = new TotemModel

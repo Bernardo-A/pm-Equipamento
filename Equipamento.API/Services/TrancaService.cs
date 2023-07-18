@@ -7,9 +7,9 @@ namespace Equipamento.API.Services
 {
     public interface ITrancaService
     {
-        public TrancaModel CreateTranca(TrancaDTO tranca);
+        public TrancaModel CreateTranca(TrancaDto tranca);
         public TrancaModel GetTranca(int id);
-        public TrancaModel UpdateTranca(TrancaDTO tranca, int id);
+        public TrancaModel UpdateTranca(TrancaDto tranca, int id);
         public TrancaModel DeleteTranca(int id);
         public List<TrancaModel> GetAll();
         public bool Contains(int id);
@@ -20,8 +20,8 @@ namespace Equipamento.API.Services
         public BicicletaModel? GetBicicleta(int trancaId);
         public bool AddTrancaToTotem(TrancaModel tranca, int totemId);
         public bool RemoveTrancaFromTotem(TrancaModel tranca, int totemId);
-        public TrancaModel? AddBicicletaToTranca(BicicletaRedeDTO viewModel);
-        public TrancaModel? RemoveBicicletaFromTranca(BicicletaRemoveDTO viewModel);
+        public TrancaModel? AddBicicletaToTranca(BicicletaRedeDto viewModel);
+        public TrancaModel? RemoveBicicletaFromTranca(BicicletaRemoveDto viewModel);
     }
 
     public class TrancaService : ITrancaService
@@ -39,7 +39,7 @@ namespace Equipamento.API.Services
         }
 
 
-        public TrancaModel CreateTranca(TrancaDTO tranca)
+        public TrancaModel CreateTranca(TrancaDto tranca)
         {
             var result = new TrancaModel
             {
@@ -60,7 +60,7 @@ namespace Equipamento.API.Services
             return dict.ElementAt(id).Value;
         }
 
-        public TrancaModel UpdateTranca(TrancaDTO tranca, int id)
+        public TrancaModel UpdateTranca(TrancaDto tranca, int id)
         {
             var trancaAntigo = dict.ElementAt(id).Value;
             var result = new TrancaModel
@@ -180,7 +180,7 @@ namespace Equipamento.API.Services
         {
             return _totemService.GetTotem(totemId);
         }
-        public TrancaModel? AddBicicletaToTranca(BicicletaRedeDTO viewModel)
+        public TrancaModel? AddBicicletaToTranca(BicicletaRedeDto viewModel)
         {
             var tranca = dict.ElementAt(viewModel.TrancaId).Value;
             if(tranca.Bicicleta != null)
@@ -193,7 +193,7 @@ namespace Equipamento.API.Services
             return tranca;
         }
 
-        public TrancaModel? RemoveBicicletaFromTranca(BicicletaRemoveDTO viewModel)
+        public TrancaModel? RemoveBicicletaFromTranca(BicicletaRemoveDto viewModel)
         {
             var tranca = dict.ElementAt(viewModel.TrancaId).Value;
             if (tranca.Bicicleta == null)

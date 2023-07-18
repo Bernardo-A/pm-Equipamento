@@ -1,10 +1,10 @@
 ﻿namespace Equipamento.API.Models
 {
-    public class BicicletaModel : BicicletaDTO
+    public class BicicletaModel : BicicletaDto
     {   
         public int Id { get; set; } 
     }
-    public class BicicletaDTO
+    public class BicicletaDto
     {
         public string? Marca { get; set; }
         public string? Modelo { get; set; }

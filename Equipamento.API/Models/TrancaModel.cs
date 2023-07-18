@@ -1,11 +1,11 @@
 ﻿namespace Equipamento.API.Models
 {
-    public class TrancaModel : TrancaDTO
+    public class TrancaModel : TrancaDto
     {
         public int Id { get; set; }
         public BicicletaModel? Bicicleta { get; set; }
     }
-    public class TrancaDTO
+    public class TrancaDto
     {
         public int? Numero { get; set; }
         public string? Localizacao { get; set; }

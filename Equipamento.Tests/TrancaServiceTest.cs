@@ -21,7 +21,7 @@ namespace Equipamento.Tests
         {
             var sut = new TrancaService(_bicicletaService.Object, _totemService.Object );
 
-            var result = sut.CreateTranca(new TrancaDTO());
+            var result = sut.CreateTranca(new TrancaDto());
 
             Assert.Equal(typeof(TrancaModel), result.GetType());
         }
@@ -31,7 +31,7 @@ namespace Equipamento.Tests
         {
             var sut = new TrancaService(_bicicletaService.Object, _totemService.Object);
 
-            sut.CreateTranca(new TrancaDTO());
+            sut.CreateTranca(new TrancaDto());
 
             sut.DeleteTranca(It.IsAny<int>());
             var result = sut.GetTranca(It.IsAny<int>());
@@ -44,7 +44,7 @@ namespace Equipamento.Tests
         {
             var sut = new TrancaService(_bicicletaService.Object, _totemService.Object);
 
-            sut.CreateTranca(new TrancaDTO());
+            sut.CreateTranca(new TrancaDto());
             var result = sut.GetTranca(It.IsAny<int>());
 
             Assert.Equal(typeof(TrancaModel), result.GetType());
@@ -55,8 +55,8 @@ namespace Equipamento.Tests
         {
             var sut = new TrancaService(_bicicletaService.Object, _totemService.Object);
 
-            sut.CreateTranca(new TrancaDTO());
-            var result = sut.UpdateTranca(new TrancaDTO(), It.IsAny<int>());
+            sut.CreateTranca(new TrancaDto());
+            var result = sut.UpdateTranca(new TrancaDto(), It.IsAny<int>());
 
             Assert.Equal(typeof(TrancaModel), result.GetType());
         }
@@ -75,7 +75,7 @@ namespace Equipamento.Tests
         public void ContainsOnSuccessReturnsTrue()
         {
             var sut = new TrancaService(_bicicletaService.Object, _totemService.Object);
-            sut.CreateTranca(new TrancaDTO());
+            sut.CreateTranca(new TrancaDto());
 
             var result = sut.Contains(It.IsAny<int>());
 
@@ -107,7 +107,7 @@ namespace Equipamento.Tests
         {
             var sut = new TrancaService(_bicicletaService.Object, _totemService.Object);
 
-            sut.CreateTranca(new TrancaDTO());
+            sut.CreateTranca(new TrancaDto());
 
             var result = sut.IsEmpty();
 
@@ -124,6 +124,7 @@ namespace Equipamento.Tests
 
             var result = sut.GetBicicleta(It.IsAny<int>());
 
+            Assert.NotNull(result);
             Assert.Equal(typeof(TotemModel), result.GetType());
         }
     }

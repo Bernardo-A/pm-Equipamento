@@ -21,7 +21,7 @@ public class TrancaController : ControllerBase
 
     [HttpPost]
     [Route("")]
-    public IActionResult Create([FromBody] TrancaDTO tranca)
+    public IActionResult Create([FromBody] TrancaDto tranca)
     {
         _logger.LogInformation("Criando Tranca...");
         var result = _trancaService.CreateTranca(tranca);
@@ -43,7 +43,7 @@ public class TrancaController : ControllerBase
 
     [HttpPut]
     [Route("{id}")]
-    public IActionResult Edit([FromBody] TrancaDTO trancaNovo, int id)
+    public IActionResult Edit([FromBody] TrancaDto trancaNovo, int id)
     {
 
         _logger.LogInformation("Alterando tranca...");
@@ -124,7 +124,7 @@ public class TrancaController : ControllerBase
 
     [HttpPost]
     [Route("integrarNaRede")]
-    public IActionResult AddToTotem([FromBody] TrancaRedeDTO viewModel)
+    public IActionResult AddToTotem([FromBody] TrancaRedeDto viewModel)
     {
         if (_trancaService.Contains(viewModel.TrancaId))
         {
@@ -140,7 +140,7 @@ public class TrancaController : ControllerBase
 
     [HttpPost]
     [Route("retirarDaRede")]
-    public IActionResult RemoveFromTotem([FromBody] TrancaRedeDTO viewModel)
+    public IActionResult RemoveFromTotem([FromBody] TrancaRedeDto viewModel)
     {
         if (_trancaService.Contains(viewModel.TrancaId))
         {
@@ -156,7 +156,7 @@ public class TrancaController : ControllerBase
 
     [HttpPost]
     [Route("/bicicleta/integrarNaRede")]
-    public IActionResult AddBicicletaToTranca([FromBody] BicicletaRedeDTO viewModel)
+    public IActionResult AddBicicletaToTranca([FromBody] BicicletaRedeDto viewModel)
     {
         if (_trancaService.Contains(viewModel.TrancaId))
         {
@@ -170,7 +170,7 @@ public class TrancaController : ControllerBase
     }
     [HttpPost]
     [Route("/bicicleta/retirarDaRede")]
-    public IActionResult RemoveBicicletaFromTranca([FromBody] BicicletaRemoveDTO viewModel)
+    public IActionResult RemoveBicicletaFromTranca([FromBody] BicicletaRemoveDto viewModel)
     {
         if (_trancaService.Contains(viewModel.TrancaId))
         {

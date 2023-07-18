@@ -6,9 +6,9 @@ namespace Equipamento.API.Services
 {
     public interface IBicicletaService
     {
-        public BicicletaModel CreateBicicleta(BicicletaDTO bicicleta);
+        public BicicletaModel CreateBicicleta(BicicletaDto bicicleta);
         public BicicletaModel GetBicicleta(int id);
-        public BicicletaModel UpdateBicicleta(BicicletaDTO bicicleta, int id);
+        public BicicletaModel UpdateBicicleta(BicicletaDto bicicleta, int id);
         public BicicletaModel Deletebicicleta(int id);
         public List<BicicletaModel> GetAll();
         public bool Contains(int id);
@@ -24,7 +24,7 @@ namespace Equipamento.API.Services
         {
         }
 
-        public virtual BicicletaModel CreateBicicleta(BicicletaDTO bicicleta)
+        public virtual BicicletaModel CreateBicicleta(BicicletaDto bicicleta)
         {
             var result = new BicicletaModel()
             {
@@ -44,7 +44,7 @@ namespace Equipamento.API.Services
             return dict.ElementAt(id).Value;
         }
 
-        public virtual BicicletaModel UpdateBicicleta(BicicletaDTO bicicleta, int id)
+        public virtual BicicletaModel UpdateBicicleta(BicicletaDto bicicleta, int id)
         {
             var result = new BicicletaModel()
             {

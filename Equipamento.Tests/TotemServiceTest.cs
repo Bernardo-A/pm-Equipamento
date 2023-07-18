@@ -17,7 +17,7 @@ namespace Equipamento.Tests
         {
             var sut = new TotemService();
 
-            var result = sut.CreateTotem(new TotemDTO
+            var result = sut.CreateTotem(new TotemDto
             {
                 Localizacao = "Rio",
                 Descricao = "totem",
@@ -31,7 +31,7 @@ namespace Equipamento.Tests
         {
             var sut = new TotemService();
 
-            sut.CreateTotem(new TotemDTO
+            sut.CreateTotem(new TotemDto
             {
                 Localizacao = "Rio",
                 Descricao = "totem",
@@ -58,7 +58,7 @@ namespace Equipamento.Tests
         {
             var sut = new TotemService();
 
-            var result = sut.UpdateTotem((new TotemDTO
+            var result = sut.UpdateTotem((new TotemDto
             {
                 Localizacao = "Rio",
                 Descricao = "totem",
@@ -81,7 +81,7 @@ namespace Equipamento.Tests
         public void ContainsOnSuccessReturnsTrue()
         {
             var sut = new TotemService();
-            sut.CreateTotem(new TotemDTO
+            sut.CreateTotem(new TotemDto
             {
                 Localizacao = "Rio",
                 Descricao = "totem",
@@ -117,7 +117,7 @@ namespace Equipamento.Tests
         {
             var sut = new TotemService();
 
-            sut.CreateTotem(new TotemDTO
+            sut.CreateTotem(new TotemDto
             {
                 Localizacao = "Rio",
                 Descricao = "totem",
@@ -132,7 +132,7 @@ namespace Equipamento.Tests
         public void AddOnSuccessAddsTrancaToTotem()
         {
             var sut = new TotemService();
-            sut.CreateTotem(new TotemDTO
+            sut.CreateTotem(new TotemDto
             {
                 Localizacao = "Rio",
                 Descricao = "totem",
@@ -148,7 +148,7 @@ namespace Equipamento.Tests
         public void GetTrancasOnSuccessReturnsTranca()
         {
             var sut = new TotemService();
-            sut.CreateTotem(new TotemDTO
+            sut.CreateTotem(new TotemDto
             {
                 Localizacao = "Rio",
                 Descricao = "totem",
@@ -158,6 +158,7 @@ namespace Equipamento.Tests
 
             var result = sut.GetTrancas(It.IsAny<int>());
 
+            Assert.NotNull(result);
             Assert.Equal(typeof(List<TrancaModel>), result.GetType());
         }
 
@@ -166,7 +167,7 @@ namespace Equipamento.Tests
         public void GetBicicletaOnSuccessReturnsBicicleta()
         {
             var sut = new TotemService();
-            sut.CreateTotem(new TotemDTO
+            sut.CreateTotem(new TotemDto
             {
                 Localizacao = "Rio",
                 Descricao = "totem",
@@ -183,7 +184,7 @@ namespace Equipamento.Tests
         public void RemoveTrancaOnSuccessReturnsBicicleta()
         {
             var sut = new TotemService();
-            sut.CreateTotem(new TotemDTO
+            sut.CreateTotem(new TotemDto
             {
                 Localizacao = "Rio",
                 Descricao = "totem",
@@ -199,7 +200,7 @@ namespace Equipamento.Tests
         public void IsTrancaAssignedOnFailureReturnsTrue()
         {
             var sut = new TotemService();
-            sut.CreateTotem(new TotemDTO
+            sut.CreateTotem(new TotemDto
             {
                 Localizacao = "Rio",
                 Descricao = "totem",

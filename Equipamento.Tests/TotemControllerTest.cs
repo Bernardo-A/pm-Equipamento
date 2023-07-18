@@ -22,7 +22,7 @@ public class TotemControllerTest
 
         var sut = new TotemController(_logger.Object, mockTotemService.Object);
 
-        var result = (OkObjectResult)sut.Create(new TotemDTO
+        var result = (OkObjectResult)sut.Create(new TotemDto
         {
             Localizacao = "Rio de Janeiro",
             Descricao = "um totem"
@@ -40,7 +40,7 @@ public class TotemControllerTest
 
         var sut = new TotemController(_logger.Object, mockTotemService.Object);
 
-        var result = (OkObjectResult)sut.Edit(new TotemDTO
+        var result = (OkObjectResult)sut.Edit(new TotemDto
         {
             Localizacao = "rio de janeiro",
             Descricao = "um totem"
@@ -58,7 +58,7 @@ public class TotemControllerTest
 
         var sut = new TotemController(_logger.Object, mockTotemService.Object);
 
-        var result = (NotFoundResult)sut.Edit(new TotemDTO
+        var result = (NotFoundResult)sut.Edit(new TotemDto
         {
             Localizacao = "rio de janeiro",
             Descricao = "um totem"

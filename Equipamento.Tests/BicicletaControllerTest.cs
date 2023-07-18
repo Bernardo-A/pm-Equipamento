@@ -21,7 +21,7 @@ public class BicicletaControllerTest
         
         var sut = new BicicletaController(_logger.Object, mockBicicletaService.Object);
 
-        var result = (OkObjectResult)sut.Create(new BicicletaDTO
+        var result = (OkObjectResult)sut.Create(new BicicletaDto
         {
             Marca = "caloi",
             Modelo = "caloi 1000",
@@ -41,7 +41,7 @@ public class BicicletaControllerTest
 
         var sut = new BicicletaController(_logger.Object, mockBicicletaService.Object);
 
-        var result = (OkObjectResult)sut.Edit(new BicicletaDTO
+        var result = (OkObjectResult)sut.Edit(new BicicletaDto
         {
             Marca = "caloi",
             Modelo = "caloi 1000",
@@ -61,7 +61,7 @@ public class BicicletaControllerTest
 
         var sut = new BicicletaController(_logger.Object, mockBicicletaService.Object);
 
-        var result = (NotFoundResult)sut.Edit(new BicicletaDTO(), It.IsAny<int>());
+        var result = (NotFoundResult)sut.Edit(new BicicletaDto(), It.IsAny<int>());
 
         result.StatusCode.Should().Be(404);
     }
