@@ -25,4 +25,23 @@
     {
         public string? StatusAcaoReparador { get; set; }
     }
+
+    public class FuncionarioModel
+    {
+        public int Id { get; set; }
+        public string? Nome { get; set; }
+        public string? DataNascimento { get; set; }
+        public string? CPF { get; set; }
+        public string? Email { get; set; }
+        public string? Senha { get; set; }
+        public string? Funcao { get; set; }
+        public bool Habilitado { get; set; } = true;
+    }
+
+    public class EmailDto
+    {
+        public string? Email { get; set; }
+        public string? Assunto { get; set; }
+        public string? Mensagem { get; set; }
+    }
 }

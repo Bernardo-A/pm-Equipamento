@@ -159,6 +159,7 @@ namespace Equipamento.API.Services
                     if(value.Id == trancaId)
                     {
                         objects.Trancas.Remove(value);
+                        value.Status = "EMREPARO";
                         value.Bicicleta = null;
                     }
                 }

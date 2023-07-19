@@ -128,8 +128,8 @@ public class TrancaController : ControllerBase
     {
         if (_trancaService.Contains(viewModel.TrancaId))
         {
-            var tranca = _trancaService.GetTranca(viewModel.TrancaId);
-            if (_trancaService.AddTrancaToTotem(tranca, viewModel.TotemId))
+            
+            if (_trancaService.AddTrancaToTotem(viewModel))
             {
                 return Ok();
             }
