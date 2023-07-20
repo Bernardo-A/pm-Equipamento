@@ -124,12 +124,12 @@ public class TrancaController : ControllerBase
 
     [HttpPost]
     [Route("integrarNaRede")]
-    public IActionResult AddToTotem([FromBody] TrancaRedeDto viewModel)
+    public async Task<IActionResult> AddToTotem([FromBody] TrancaRedeDto viewModel)
     {
         if (_trancaService.Contains(viewModel.TrancaId))
         {
             
-            if (_trancaService.AddTrancaToTotem(viewModel))
+            if (await _trancaService.AddTrancaToTotem(viewModel))
             {
                 return Ok();
             }
@@ -140,12 +140,11 @@ public class TrancaController : ControllerBase
 
     [HttpPost]
     [Route("retirarDaRede")]
-    public IActionResult RemoveFromTotem([FromBody] TrancaRedeDto viewModel)
+    public async Task<IActionResult> RemoveFromTotem([FromBody] TrancaRedeDto viewModel)
     {
         if (_trancaService.Contains(viewModel.TrancaId))
         {
-            var tranca = _trancaService.GetTranca(viewModel.TrancaId);
-            if (_trancaService.RemoveTrancaFromTotem(tranca, viewModel.TotemId))
+            if (await _trancaService.RemoveTrancaFromTotem(viewModel))
             {
                 return Ok();
             }

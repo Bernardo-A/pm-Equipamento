@@ -219,6 +219,7 @@ namespace Equipamento.API.Services
             var bicicleta = _bicicletaService.GetBicicleta(viewModel.BicicletaId);
             bicicleta.Status = "DISPONIVEL";
             tranca.Bicicleta = bicicleta;
+            tranca.Status= "OCUPADA";
 
             var responseTranca = await HttpClient.GetAsync(aluguelAddress + "/funcionario/" + viewModel.FuncionarioId);
             var funcionario = await responseTranca.Content.ReadFromJsonAsync<FuncionarioModel>();
