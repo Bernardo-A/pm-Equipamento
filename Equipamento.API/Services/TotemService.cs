@@ -42,7 +42,7 @@ namespace Equipamento.API.Services
                 Descricao = totem.Descricao,    
             };
             dict.Add(dict.Count, result);
-            return (result);
+            return (dict.ElementAt(result.Id).Value);
         }
 
         public TotemModel GetTotem(int id)
