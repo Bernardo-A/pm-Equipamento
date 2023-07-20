@@ -227,22 +227,22 @@ public class TrancaControllerTest
     }
 
     [Fact]
-    public void AddtoTotemOnSuccessReturnStatuscode200()
+    public async void AddtoTotemOnSuccessReturnStatuscode200()
     {
         var mockTrancaService = new Mock<ITrancaService>();
         mockTrancaService.Setup(service => service.Contains(It.IsAny<int>())).Returns(true);
         mockTrancaService.Setup(service => service.GetTranca(It.IsAny<int>())).Returns(new TrancaModel());
-        mockTrancaService.Setup(service => service.AddTrancaToTotem(It.IsAny<TrancaModel>(), It.IsAny<int>())).Returns(true);
+        mockTrancaService.Setup(service => service.AddTrancaToTotem(It.IsAny<TrancaRedeDto>())).ReturnsAsync(true);
 
         var sut = new TrancaController(_logger.Object, mockTrancaService.Object);
 
-        var result = (OkObjectResult)sut.AddToTotem(It.IsAny<TrancaRedeDto>());
+        var result = (OkObjectResult) await sut.AddToTotem(It.IsAny<TrancaRedeDto>());
 
         result.StatusCode.Should().Be(200);
     }
 
     [Fact]
-    public void RemoveFromTotemOnSuccessReturnStatuscode200()
+    public async void RemoveFromTotemOnSuccessReturnStatuscode200()
     {
         var mockTrancaService = new Mock<ITrancaService>();
         mockTrancaService.Setup(service => service.Contains(It.IsAny<int>())).Returns(true);
@@ -250,7 +250,7 @@ public class TrancaControllerTest
 
         var sut = new TrancaController(_logger.Object, mockTrancaService.Object);
 
-        var result = (OkObjectResult)sut.RemoveFromTotem(It.IsAny<TrancaRedeDto>());
+        var result = (OkObjectResult) await sut.RemoveFromTotem(It.IsAny<TrancaRedeDto>());
 
         result.StatusCode.Should().Be(200);
     }
@@ -260,7 +260,7 @@ public class TrancaControllerTest
     {
         var mockTrancaService = new Mock<ITrancaService>();
         mockTrancaService.Setup(service => service.Contains(It.IsAny<int>())).Returns(true);
-        mockTrancaService.Setup(service => service.RemoveBicicletaFromTranca(It.IsAny<BicicletaRemoveDto>())).Returns(new TrancaModel());
+        mockTrancaService.Setup(service => service.RemoveBicicletaFromTranca(It.IsAny<BicicletaRemoveDto>())).ReturnsAsync(new TrancaModel());
 
         var sut = new TrancaController(_logger.Object, mockTrancaService.Object);
 
@@ -274,7 +274,7 @@ public class TrancaControllerTest
     {
         var mockTrancaService = new Mock<ITrancaService>();
         mockTrancaService.Setup(service => service.Contains(It.IsAny<int>())).Returns(true);
-        mockTrancaService.Setup(service => service.AddBicicletaToTranca(It.IsAny<BicicletaRemoveDto>())).Returns(new TrancaModel());
+        mockTrancaService.Setup(service => service.AddBicicletaToTranca(It.IsAny<BicicletaRemoveDto>())).ReturnsAsync(new TrancaModel());
 
         var sut = new TrancaController(_logger.Object, mockTrancaService.Object);
 
