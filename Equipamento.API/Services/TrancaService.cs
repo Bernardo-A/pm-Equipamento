@@ -133,7 +133,7 @@ namespace Equipamento.API.Services
             }
             if (tranca.Bicicleta != null)
             {
-                tranca.Bicicleta.Status = "EM_USO";
+                tranca.Bicicleta.Status = "EMUSO";
                 dict[trancaId].Bicicleta = null;
             }
             return dict.ElementAt(trancaId).Value;
@@ -146,7 +146,9 @@ namespace Equipamento.API.Services
             {
                 return dict.ElementAt(trancaId).Value;
             }
-            dict[trancaId].Bicicleta = _bicicletaService.GetBicicleta((int)bicicletaId);
+            var bicicleta = _bicicletaService.GetBicicleta((int)bicicletaId);
+            bicicleta.Status = "DISPONIVEL";
+            dict[trancaId].Bicicleta = bicicleta;
             return dict.ElementAt(trancaId).Value;
         }
 
