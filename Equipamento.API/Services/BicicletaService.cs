@@ -1,32 +1,32 @@
 ﻿using AutoMapper;
-using Equipamento.API.ViewModels;
+using Equipamento.API.Models;
 using static Equipamento.API.Services.BicicletaService;
 
 namespace Equipamento.API.Services
 {
     public interface IBicicletaService
     {
-        public BicicletaViewModel CreateBicicleta(BicicletaInsertViewModel bicicleta);
-        public BicicletaViewModel GetBicicleta(int id);
-        public BicicletaViewModel UpdateBicicleta(BicicletaInsertViewModel bicicleta, int id);
-        public BicicletaViewModel Deletebicicleta(int id);
-        public List<BicicletaViewModel> GetAll();
+        public BicicletaModel CreateBicicleta(BicicletaDto bicicleta);
+        public BicicletaModel GetBicicleta(int id);
+        public BicicletaModel UpdateBicicleta(BicicletaDto bicicleta, int id);
+        public BicicletaModel Deletebicicleta(int id);
+        public List<BicicletaModel> GetAll();
         public bool Contains(int id);
         public bool IsEmpty();
-        public BicicletaViewModel ChangeStatus(int id, string status);
+        public BicicletaModel ChangeStatus(int id, string status);
     }
 
     public class BicicletaService : IBicicletaService
     {
-        private static readonly Dictionary<int, BicicletaViewModel> dict = new();
+        private static readonly Dictionary<int, BicicletaModel> dict = new();
 
         public BicicletaService() 
         {
         }
 
-        public virtual BicicletaViewModel CreateBicicleta(BicicletaInsertViewModel bicicleta)
+        public virtual BicicletaModel CreateBicicleta(BicicletaDto bicicleta)
         {
-            var result = new BicicletaViewModel()
+            var result = new BicicletaModel()
             {
                 Id = dict.Count,
                 Marca = bicicleta.Marca,
@@ -39,14 +39,14 @@ namespace Equipamento.API.Services
             return (result);
         }
 
-        public virtual BicicletaViewModel GetBicicleta(int id)
+        public virtual BicicletaModel GetBicicleta(int id)
         {
             return dict.ElementAt(id).Value;
         }
 
-        public virtual BicicletaViewModel UpdateBicicleta(BicicletaInsertViewModel bicicleta, int id)
+        public virtual BicicletaModel UpdateBicicleta(BicicletaDto bicicleta, int id)
         {
-            var result = new BicicletaViewModel()
+            var result = new BicicletaModel()
             {
                 Id = id,
                 Marca = bicicleta.Marca,
@@ -59,16 +59,16 @@ namespace Equipamento.API.Services
             return (result);
         }
 
-        public virtual BicicletaViewModel Deletebicicleta(int id)
+        public virtual BicicletaModel Deletebicicleta(int id)
         {
             dict[id].Status = "Excluida";
             return dict.ElementAt(id).Value;
         }
 
-        public virtual List<BicicletaViewModel> GetAll()
+        public virtual List<BicicletaModel> GetAll()
         {
-            List<BicicletaViewModel> result = new();
-            Dictionary<int, BicicletaViewModel>.ValueCollection objects = dict.Values;
+            List<BicicletaModel> result = new();
+            Dictionary<int, BicicletaModel>.ValueCollection objects = dict.Values;
             foreach (var value in objects)
             {
                 result.Add(value);
@@ -76,7 +76,7 @@ namespace Equipamento.API.Services
             return result;
         }
 
-        public virtual BicicletaViewModel ChangeStatus(int id, string status)
+        public virtual BicicletaModel ChangeStatus(int id, string status)
         {
             dict[id].Status = status;
             return dict.ElementAt(id).Value;

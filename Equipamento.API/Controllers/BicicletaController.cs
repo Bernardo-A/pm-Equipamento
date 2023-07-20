@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Equipamento.API.Services;
-using Equipamento.API.ViewModels;
+using Equipamento.API.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Equipamento.API.Controllers;
@@ -21,7 +21,7 @@ public class BicicletaController : ControllerBase
 
     [HttpPost]
     [Route("")]
-    public IActionResult Create([FromBody] BicicletaInsertViewModel bicicleta)
+    public IActionResult Create([FromBody] BicicletaDto bicicleta)
     {
         _logger.LogInformation("Criando bicicleta...");
         var result = _bicicletaService.CreateBicicleta(bicicleta);
@@ -30,7 +30,7 @@ public class BicicletaController : ControllerBase
 
     [HttpPut]
     [Route("{id}")]
-    public IActionResult Edit([FromBody] BicicletaInsertViewModel bicicletaNovo, int id)
+    public IActionResult Edit([FromBody] BicicletaDto bicicletaNovo, int id)
     {
 
         _logger.LogInformation("Alterando bicicleta...");

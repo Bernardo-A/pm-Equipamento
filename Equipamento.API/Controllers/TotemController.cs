@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Equipamento.API.Services;
-using Equipamento.API.ViewModels;
+using Equipamento.API.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Equipamento.API.Controllers;
@@ -21,7 +21,7 @@ public class TotemController : ControllerBase
 
     [HttpPost]
     [Route("")]
-    public IActionResult Create([FromBody] TotemInsertViewModel totem)
+    public IActionResult Create([FromBody] TotemDto totem)
     {
         _logger.LogInformation("Criando Totem...");
 
@@ -32,7 +32,7 @@ public class TotemController : ControllerBase
 
     [HttpPut]
     [Route("{id}")]
-    public IActionResult Edit([FromBody] TotemInsertViewModel totemNovo, int id)
+    public IActionResult Edit([FromBody] TotemDto totemNovo, int id)
     {
         _logger.LogInformation("Alterando totem...");
 

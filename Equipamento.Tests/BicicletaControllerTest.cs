@@ -1,13 +1,13 @@
 using Equipamento.API.Controllers;
 using Equipamento.API.Services;
-using Equipamento.API.ViewModels;
+using Equipamento.API.Models;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
 
-namespace equipamento.tests;
+namespace Equipamento.Tests;
 
 public class BicicletaControllerTest
 {
@@ -21,7 +21,7 @@ public class BicicletaControllerTest
         
         var sut = new BicicletaController(_logger.Object, mockBicicletaService.Object);
 
-        var result = (OkObjectResult)sut.Create(new BicicletaInsertViewModel
+        var result = (OkObjectResult)sut.Create(new BicicletaDto
         {
             Marca = "caloi",
             Modelo = "caloi 1000",
@@ -41,7 +41,7 @@ public class BicicletaControllerTest
 
         var sut = new BicicletaController(_logger.Object, mockBicicletaService.Object);
 
-        var result = (OkObjectResult)sut.Edit(new BicicletaInsertViewModel
+        var result = (OkObjectResult)sut.Edit(new BicicletaDto
         {
             Marca = "caloi",
             Modelo = "caloi 1000",
@@ -61,7 +61,7 @@ public class BicicletaControllerTest
 
         var sut = new BicicletaController(_logger.Object, mockBicicletaService.Object);
 
-        var result = (NotFoundResult)sut.Edit(new BicicletaInsertViewModel(), It.IsAny<int>());
+        var result = (NotFoundResult)sut.Edit(new BicicletaDto(), It.IsAny<int>());
 
         result.StatusCode.Should().Be(404);
     }
@@ -71,7 +71,7 @@ public class BicicletaControllerTest
     {
         var mockBicicletaService = new Mock<BicicletaService>();
         mockBicicletaService.Setup(service => service.Contains(It.IsAny<int>())).Returns(true);
-        mockBicicletaService.Setup(service => service.Deletebicicleta(It.IsAny<int>())).Returns(new BicicletaViewModel());
+        mockBicicletaService.Setup(service => service.Deletebicicleta(It.IsAny<int>())).Returns(new BicicletaModel());
 
         var sut = new BicicletaController(_logger.Object, mockBicicletaService.Object);
 
@@ -98,7 +98,7 @@ public class BicicletaControllerTest
     {
         var mockBicicletaService = new Mock<BicicletaService>();
         mockBicicletaService.Setup(service => service.Contains(It.IsAny<int>())).Returns(true);
-        mockBicicletaService.Setup(service => service.GetBicicleta(It.IsAny<int>())).Returns(new BicicletaViewModel());
+        mockBicicletaService.Setup(service => service.GetBicicleta(It.IsAny<int>())).Returns(new BicicletaModel());
 
         var sut = new BicicletaController(_logger.Object, mockBicicletaService.Object);
 
@@ -125,7 +125,7 @@ public class BicicletaControllerTest
     {
         var mockBicicletaService = new Mock<BicicletaService>();
         mockBicicletaService.Setup(service => service.Contains(It.IsAny<int>())).Returns(true);
-        mockBicicletaService.Setup(service => service.ChangeStatus(It.IsAny<int>(), It.IsAny<string>())).Returns(new BicicletaViewModel());
+        mockBicicletaService.Setup(service => service.ChangeStatus(It.IsAny<int>(), It.IsAny<string>())).Returns(new BicicletaModel());
 
         var sut = new BicicletaController(_logger.Object, mockBicicletaService.Object);
 
@@ -152,7 +152,7 @@ public class BicicletaControllerTest
     {
         var mockBicicletaService = new Mock<BicicletaService>();
         mockBicicletaService.Setup(service => service.IsEmpty()).Returns(false);
-        mockBicicletaService.Setup(service => service.GetAll()).Returns(new List<BicicletaViewModel>());
+        mockBicicletaService.Setup(service => service.GetAll()).Returns(new List<BicicletaModel>());
 
         var sut = new BicicletaController(_logger.Object, mockBicicletaService.Object);
 

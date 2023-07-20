@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Equipamento.API.Services;
-using Equipamento.API.ViewModels;
+using Equipamento.API.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -21,7 +21,7 @@ public class TrancaController : ControllerBase
 
     [HttpPost]
     [Route("")]
-    public IActionResult Create([FromBody] TrancaInsertViewModel tranca)
+    public IActionResult Create([FromBody] TrancaDto tranca)
     {
         _logger.LogInformation("Criando Tranca...");
         var result = _trancaService.CreateTranca(tranca);
@@ -43,7 +43,7 @@ public class TrancaController : ControllerBase
 
     [HttpPut]
     [Route("{id}")]
-    public IActionResult Edit([FromBody] TrancaInsertViewModel trancaNovo, int id)
+    public IActionResult Edit([FromBody] TrancaDto trancaNovo, int id)
     {
 
         _logger.LogInformation("Alterando tranca...");
@@ -124,12 +124,12 @@ public class TrancaController : ControllerBase
 
     [HttpPost]
     [Route("integrarNaRede")]
-    public IActionResult AddToTotem([FromBody] TrancaRedeViewModel viewModel)
+    public async Task<IActionResult> AddToTotem([FromBody] TrancaRedeDto viewModel)
     {
         if (_trancaService.Contains(viewModel.TrancaId))
         {
-            var tranca = _trancaService.GetTranca(viewModel.TrancaId);
-            if (_trancaService.AddTrancaToTotem(tranca, viewModel.TotemId))
+            
+            if (await _trancaService.AddTrancaToTotem(viewModel))
             {
                 return Ok();
             }
@@ -140,12 +140,11 @@ public class TrancaController : ControllerBase
 
     [HttpPost]
     [Route("retirarDaRede")]
-    public IActionResult RemoveFromTotem([FromBody] TrancaRedeViewModel viewModel)
+    public async Task<IActionResult> RemoveFromTotem([FromBody] TrancaRedeDto viewModel)
     {
         if (_trancaService.Contains(viewModel.TrancaId))
         {
-            var tranca = _trancaService.GetTranca(viewModel.TrancaId);
-            if (_trancaService.RemoveTrancaFromTotem(tranca, viewModel.TotemId))
+            if (await _trancaService.RemoveTrancaFromTotem(viewModel))
             {
                 return Ok();
             }
@@ -156,7 +155,7 @@ public class TrancaController : ControllerBase
 
     [HttpPost]
     [Route("/bicicleta/integrarNaRede")]
-    public IActionResult AddBicicletaToTranca([FromBody] BicicletaRedeAddViewModel viewModel)
+    public IActionResult AddBicicletaToTranca([FromBody] BicicletaRedeDto viewModel)
     {
         if (_trancaService.Contains(viewModel.TrancaId))
         {
@@ -170,7 +169,7 @@ public class TrancaController : ControllerBase
     }
     [HttpPost]
     [Route("/bicicleta/retirarDaRede")]
-    public IActionResult RemoveBicicletaFromTranca([FromBody] BicicletaRemoveViewModel viewModel)
+    public IActionResult RemoveBicicletaFromTranca([FromBody] BicicletaRemoveDto viewModel)
     {
         if (_trancaService.Contains(viewModel.TrancaId))
         {
