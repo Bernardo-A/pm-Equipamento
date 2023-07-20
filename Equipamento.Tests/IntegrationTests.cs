@@ -20,6 +20,7 @@ namespace Equipamento.Tests
             var client = new HttpClient();
             var response = await client.GetAsync(aluguelAddress + "/funcionario/" + 0);
             response.EnsureSuccessStatusCode();
+            Assert.True(response.IsSuccessStatusCode);
         }
         [Fact]
         public async Task PostEmailIntegration()
@@ -34,6 +35,7 @@ namespace Equipamento.Tests
 
             var result = await client.PostAsync(externoAddress + "/enviarEmail", body);
             result.EnsureSuccessStatusCode();
+            Assert.True(result.IsSuccessStatusCode);
         }
     }
 }
